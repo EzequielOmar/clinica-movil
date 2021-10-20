@@ -1,0 +1,160 @@
+<div [formGroup]="person">
+  <div class="row">
+    <!--Nombre-->
+    <div class="col-md-6">
+      <label for="nombre">Nombre</label>
+      <input pattern="[a-zA-Z ]*" minlength=2 maxlength=25 formControlName="nombre" type="text" class="form-control"
+        placeholder="Nombre/s" value="" required>
+      <!--Errores-->
+      <div *ngIf="person.controls['nombre'].invalid && (sended || person.controls['nombre'].touched)">
+        <div *ngIf="person.controls['nombre'].errors?.required then reqError">
+        </div>
+        <div *ngIf="person.controls['nombre'].errors?.pattern then patError">
+        </div>
+        <div *ngIf="person.controls['nombre'].errors?.minlength then minError">
+        </div>
+        <div *ngIf="person.controls['nombre'].errors?.maxlength then minError">
+        </div>
+      </div>
+    </div>
+    <!--Apellido-->
+    <div class="col-md-6">
+      <label for="apellido">Apellido</label>
+      <input pattern="[a-zA-Z ]*" minlength=2 maxlength=25 formControlName="apellido" type="text" class="form-control"
+        placeholder="Apellido/s" value="" required>
+      <!--Errores-->
+      <div *ngIf="person.controls['apellido'].invalid &&  (sended || person.controls['apellido'].touched)">
+        <div *ngIf="person.controls['apellido'].errors?.required then reqError">
+        </div>
+        <div *ngIf="person.controls['apellido'].errors?.pattern then patError">
+        </div>
+        <div *ngIf="person.controls['apellido'].errors?.minlength then minError">
+        </div>
+        <div *ngIf="person.controls['apellido'].errors?.maxlength then minError">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Email-->
+  <div class="col">
+    <label for="mail">Email</label>
+    <input minlength=9 maxlength=40 formControlName="mail" required name="mail" type="email" class="form-control"
+      placeholder="correo electrónico">
+    <!--Errores-->
+    <div *ngIf="person.controls['mail'].invalid &&  (sended || person.controls['mail'].touched)">
+      <div *ngIf="person.controls['mail'].errors?.required then reqError">
+      </div>
+      <div *ngIf="person.controls['mail'].errors?.pattern then patError">
+      </div>
+      <div *ngIf="person.controls['mail'].errors?.minlength then minError">
+      </div>
+      <div *ngIf="person.controls['mail'].errors?.maxlength then minError">
+      </div>
+    </div>
+  </div>
+  <div [formGroup]="pass" class="row">
+    <!--Password-->
+    <div class="col-sm-6">
+      <label for="password">Contraseña</label>
+      <input minlength=6 maxlength=30 formControlName="password" required minlength="6" name="password" type="password"
+        placeholder="Ingresá una contraseña" class="form-control">
+      <div
+        *ngIf="pass.controls['password'].errors?.required && (sended || pass.controls['password'].touched) then reqError">
+      </div>
+      <div
+        *ngIf="pass.controls['password'].errors?.minlength && (sended || pass.controls['password'].touched) then minError">
+      </div>
+      <div
+        *ngIf="pass.controls['password'].errors?.maxlength &&  (sended || pass.controls['password'].touched) then maxError">
+      </div>
+    </div>
+    <!--PassCheck-->
+    <div class="col-sm-6">
+      <label for="passCheck">Repetir contraseña</label>
+      <input minlength=6 maxlength=30 formControlName="passCheck" required name="passCheck" type="password"
+        placeholder="Repetí la contraseña ingresada" class="form-control">
+      <div
+        *ngIf="pass.controls['passCheck'].errors?.required && (sended || pass.controls['passCheck'].touched) then reqError">
+      </div>
+      <div class="invalid-feedback d-block" style="width: 100%;"
+        *ngIf="pass.controls['passCheck'].value !== pass.controls['password'].value && (sended || pass.controls['passCheck'].touched)">
+        *Las contraseñas no coinciden*
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--fecha nacimiento-->
+    <div class="col-6">
+      <label for="f_nac">Fecha de nacimiento</label>
+      <div class="input-group date">
+        <input [minDate]="getMinDate()" [maxDate]="getMaxDate()" formControlName="f_nac" required class="form-control"
+          placeholder="yyyy-mm-dd" type="text" name="dp" ngbDatepicker #dp="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
+              <path
+                d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z" />
+              <path
+                d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        *ngIf="person.controls['f_nac'].errors?.required && (sended || person.controls['f_nac'].touched) then reqError">
+      </div>
+      <div class="invalid-feedback d-block" style="width: 100%;"
+        *ngIf="person.controls['f_nac'].errors?.ngbDate.minDate && (sended || person.controls['f_nac'].touched)">
+        *La edad ingresada es muy grande*
+      </div>
+      <div class="invalid-feedback d-block" style="width: 100%;"
+        *ngIf="person.controls['f_nac'].errors?.ngbDate.maxDate && (sended || person.controls['f_nac'].touched)">
+        *Lo siento, tienes que ser mayor de 18, consulta por el paquete familiar*
+      </div>
+    </div>
+    <!--Dni-->
+    <div class="col-6">
+      <label for="dni">Nro. de DNI</label>
+      <input pattern="[0-9]*" minlength=7 maxlength=10 formControlName="dni" required name="dni" type="edni"
+        class="form-control" placeholder="Nro. de dni">
+      <!--Errores-->
+      <div *ngIf="person.controls['dni'].invalid &&  (sended || person.controls['dni'].touched)">
+        <div *ngIf="person.controls['dni'].errors?.required then reqError">
+        </div>
+        <div *ngIf="person.controls['dni'].errors?.pattern then patError">
+        </div>
+        <div *ngIf="person.controls['dni'].errors?.minlength then minError">
+        </div>
+        <div *ngIf="person.controls['dni'].errors?.maxlength then minError">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Templates-->
+<ng-template #reqError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *Este campo es obligatorio*
+  </div>
+</ng-template>
+<!--ERROR -> Patron incorrecto-->
+<ng-template #patError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El formato del campo es incorrecto*
+  </div>
+</ng-template>
+<!--ERROR -> minimo-->
+<ng-template #minError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy corto/bajo*
+  </div>
+</ng-template>
+<!--ERROR -> maximo-->
+<ng-template #maxError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy largo/alto*
+  </div>
+</ng-template>

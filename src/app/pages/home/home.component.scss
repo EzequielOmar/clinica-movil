@@ -1,0 +1,27 @@
+.carousel {
+  img {
+    width: 100%;
+    max-height: 450px;
+    opacity: 60%;
+  }
+  h3,
+  p {
+    color: white;
+  }
+  top: -1.4rem;
+  z-index: -1;
+}
+
+.rounded-circle {
+  border: 2px solid grey;
+}
+
+.link {
+  border: 1px solid white;
+  font-weight: 700;
+}
+
+.floatButton {
+  top: -5rem;
+  position: relative;
+}

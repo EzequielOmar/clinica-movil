@@ -1,0 +1,120 @@
+<!--Nav-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand px-3" href="#">Navbar</a>
+  <button (click)="toggleMenu()" class="navbar-toggler mx-3" type="button" data-toggle="collapse"
+    data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" [class.show]="show">
+    <ul class="navbar-nav mt-2 mt-lg-0 mx-3">
+      <li class="nav-item active">
+        <a class="nav-link" (click)="goToLogin()">Entrar</a>
+      </li>
+      <!--
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      -->
+    </ul>
+  </div>
+</nav>
+<!--Carrousel-->
+<ngb-carousel *ngIf="images" class="carousel bg-secondary">
+  <ng-template ngbSlide [id]="'0'">
+    <div class="picsum-img-wrapper">
+      <img [src]="images[0]" alt="first slide">
+    </div>
+    <div class="carousel-caption pb-5">
+      <h3>Recursos</h3>
+      <p>Trabajamos con la última tecnología.</p>
+    </div>
+  </ng-template>
+  <ng-template ngbSlide [id]="'1'">
+    <div class="picsum-img-wrapper">
+      <img [src]="images[1]" alt="second slide">
+    </div>
+    <div class="carousel-caption pb-5">
+      <h3>Instalaciones</h3>
+      <p>Tenemos instalaciones de primer nivel. Seis sedes a su disposición y próximamente más.</p>
+    </div>
+  </ng-template>
+  <ng-template ngbSlide [id]="'2'">
+    <div class="picsum-img-wrapper">
+      <img [src]="images[2]" alt="third slide">
+    </div>
+    <div class="carousel-caption pb-5">
+      <h3>Profesionales</h3>
+      <p>Nuestro equipo de profesionales, es de máximo nivel.</p>
+    </div>
+  </ng-template>
+</ngb-carousel>
+<div class="text-center">
+  <button (click)="goToSignClient()" type="button" class="btn btn-primary px-5 link floatButton">Únete</button>
+</div>
+<hr class="featurette-divider">
+<!--Profiles-->
+<div class="container text-center">
+  <h3 class="mb-5 mt-3">Nuestros Especialistas</h3>
+  <div class="row ">
+    <div class="col-md-4">
+      <img class="bd-placeholder-img rounded-circle m-3" width="200" height="200" src="assets/profiles/1.jpg"
+        alt="profesional-picture">
+      <h2>Heading</h2>
+      <p>Some representative placeholder content for the three columns of text below the carousel. This is the first
+        column.</p>
+    </div>
+    <div class="col-md-4">
+      <img class="bd-placeholder-img rounded-circle m-3" width="200" height="200" src="assets/profiles/2.jpg"
+        alt="profesional-picture">
+      <h2>Heading</h2>
+      <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
+    </div>
+    <div class="col-md-4">
+      <img class="bd-placeholder-img rounded-circle m-3" width="200" height="200" src="assets/profiles/3.jpg"
+        alt="profesional-picture">
+      <h2>Heading</h2>
+      <p>And lastly this, the third column of representative placeholder content.</p>
+    </div>
+  </div>
+  <button (click)="goToSignPro()" type="button" class="btn btn-primary px-5 link py-2 my-3">Trabajá con
+    nosotros</button>
+</div>
+<!--Footer-->
+<footer class="pt-4 my-md-5 pt-md-5 border-top">
+  <div class="row text-center">
+    <div class="col-6 col-md">
+      <h5>Features</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Cool stuff</a></li>
+        <li><a class="text-muted" href="#">Random feature</a></li>
+        <li><a class="text-muted" href="#">Team feature</a></li>
+        <li><a class="text-muted" href="#">Stuff for developers</a></li>
+        <li><a class="text-muted" href="#">Another one</a></li>
+        <li><a class="text-muted" href="#">Last time</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Resources</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Resource</a></li>
+        <li><a class="text-muted" href="#">Resource name</a></li>
+        <li><a class="text-muted" href="#">Another resource</a></li>
+        <li><a class="text-muted" href="#">Final resource</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>About</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Team</a></li>
+        <li><a class="text-muted" href="#">Locations</a></li>
+        <li><a class="text-muted" href="#">Privacy</a></li>
+        <li><a class="text-muted" href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

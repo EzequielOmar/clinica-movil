@@ -1,0 +1,105 @@
+<div class="dogtor d-flex justify-content-center">
+  <div class="container row justify-content-center align-items-center">
+    <form class="needs-validation col-md-8 text-center" [formGroup]="form" (ngSubmit)="send()">
+      <div class="row m-3">
+        <legend>¡Bienvenido/a!</legend>
+        <span>Por favor, logueáte para ingresar a tu Perfil</span>
+      </div>
+      <!--Error Messagge-->
+      <div *ngIf="error then errorSpan"></div>
+      <!--Email-->
+      <div class="col">
+        <label for="mail">Email</label>
+        <input minlength=9 maxlength=40 formControlName="mail" required name="mail" type="email" class="form-control"
+          placeholder="correo electrónico">
+        <!--Errores-->
+        <div *ngIf="form.controls['mail'].invalid &&  (sended || form.controls['mail'].touched)">
+          <div *ngIf="form.controls['mail'].errors?.required then reqError">
+          </div>
+          <div *ngIf="form.controls['mail'].errors?.pattern then patError">
+          </div>
+          <div *ngIf="form.controls['mail'].errors?.minlength then minError">
+          </div>
+          <div *ngIf="form.controls['mail'].errors?.maxlength then minError">
+          </div>
+        </div>
+      </div>
+      <!--Password-->
+      <div class="col">
+        <label for="password">Contraseña</label>
+        <input minlength=6 maxlength=30 formControlName="password" required minlength="6" name="password"
+          type="password" placeholder="Ingresá una contraseña" class="form-control">
+        <div
+          *ngIf="form.controls['password'].errors?.required && (sended || form.controls['password'].touched) then reqError">
+        </div>
+        <div
+          *ngIf="form.controls['password'].errors?.minlength && (sended || form.controls['password'].touched) then minError">
+        </div>
+        <div
+          *ngIf="form.controls['password'].errors?.maxlength &&  (sended || form.controls['password'].touched) then maxError">
+        </div>
+      </div>
+      <!-- Forgot Password -->
+      <a (click)="forgotPass()">¿Olvidaste la constraseña?</a>
+      <!--send-->
+      <div class="row">
+        <div class="col-6">
+          <button (click)="cancel()" type="button" class="btn btn-secondary px-5 link py-2 my-3 ">Cancelar</button>
+        </div>
+        <div class="col-6">
+          <button type="submit" class="btn btn-primary px-5 link py-2 my-3">Entrar</button>
+        </div>
+      </div>
+      <!-- Logueo Rapido-->
+      <div class="row">
+        <a class="col-4 px-3 text-secondary" (click)="fillForm('admin')">Logueo admin</a>
+        <a class="col-4 px-3 text-secondary" (click)="fillForm('specialist')">Logueo especialista</a>
+        <a class="col-4 px-3 text-secondary" (click)="fillForm('tester')">Logueo cliente</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!--Templates-->
+<ng-template #reqError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *Este campo es obligatorio*
+  </div>
+</ng-template>
+<!--ERROR -> Patron incorrecto-->
+<ng-template #patError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El formato del campo es incorrecto*
+  </div>
+</ng-template>
+<!--ERROR -> minimo-->
+<ng-template #minError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy corto/bajo*
+  </div>
+</ng-template>
+<!--ERROR -> maximo-->
+<ng-template #maxError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy largo/alto*
+  </div>
+</ng-template>
+<!--Loading-->
+<ng-template #loading>
+  <div class="col-6">
+    <button class="btn btn-primary px-4 link py-2 my-3" type="button" disabled>
+      <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
+      <span class="sr-only">Procesando...</span>
+    </button>
+  </div>
+</ng-template>
+<!--Error-->
+<ng-template #errorSpan>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Algo ha salido mal.</strong>
+    Error en los datos.
+    <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>

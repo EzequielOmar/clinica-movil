@@ -1,0 +1,103 @@
+<div class="dogtor d-flex justify-content-center">
+  <div class="container row justify-content-center align-items-center">
+    <form *ngIf="!success else successSpan" class="needs-validation col-md-8 text-center" [formGroup]="form"
+      (ngSubmit)="send()">
+      <div class="row m-3">
+        <legend>Completá el formulario</legend>
+        <span>Comenzarás a recibir la mejor atención luego de registrarse.</span>
+      </div>
+      <!--Error Messagge-->
+      <div *ngIf="error then errorSpan"></div>
+      <app-form-persona [pass]="pass" [person]="persona" [sended]="sended"></app-form-persona>
+      <div class="row">
+        <!--Obra Social-->
+        <div class="col-md-6">
+          <label for="obra_social">Obra Social</label>
+          <select formControlName="obra_social" class="form-control">
+            <option selected disabled>-- Prestadores --</option>
+            <option [value]="item" *ngFor="let item of prestadores">{{item}}</option>
+          </select>
+          <div
+            *ngIf="form.controls['obra_social'].errors?.required && (sended||form.controls['obra_social'].touched)  then reqError">
+          </div>
+        </div>
+        <!--Imágenes-->
+        <div class="col-md-6">
+          <label style="width: 100%;" for="portada">Imágenes de perfil</label>
+          <label style="width: 100%;" class="image-upload-container">
+            <input (input)="getImage($event)" #imageInput class="file-input form-control" type="file"
+              accept=".jpeg,.jpg,.png,.svg" multiple="multiple">
+          </label>
+          <!--Errores-->
+          <div *ngIf="form.controls['img_urls'].errors?.required && sended then reqError">
+          </div>
+          <div class="invalid-feedback d-block" style="width: 100%;"
+            *ngIf="form.controls['img_urls'].value.length < 2 && sended ">
+            *Es necesario ingresar al menos dos imágenes para registrarse*
+          </div>
+        </div>
+      </div>
+      <!--send-->
+      <div class="row">
+        <div class="col-6">
+          <button (click)="cancel()" type="button" class="btn btn-secondary px-5 link py-2 my-3 ">Cancelar</button>
+        </div>
+        <div class="col-6" *ngIf="!spinner else loading">
+          <button type="submit" class="btn btn-primary px-5 link py-2 my-3">Enviar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!--Templates-->
+<ng-template #reqError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *Este campo es obligatorio*
+  </div>
+</ng-template>
+<!--ERROR -> Patron incorrecto-->
+<ng-template #patError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El formato del campo es incorrecto*
+  </div>
+</ng-template>
+<!--ERROR -> minimo-->
+<ng-template #minError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy corto/bajo*
+  </div>
+</ng-template>
+<!--ERROR -> maximo-->
+<ng-template #maxError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy largo/alto*
+  </div>
+</ng-template>
+<!--Loading-->
+<ng-template #loading>
+  <div class="col-6">
+    <button class="btn btn-primary px-4 link py-2 my-3" type="button" disabled>
+      <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
+      <span class="sr-only">Procesando...</span>
+    </button>
+  </div>
+</ng-template>
+<!--Error-->
+<ng-template #errorSpan>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Algo ha salido mal.</strong>
+    Error en los datos.
+    <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
+<!--Success-->
+<ng-template #successSpan>
+  <div class="col-8 alert alert-info" role="alert">
+    <legend>¡Felicitaciones!</legend>
+    <p>Gracias por elegirnos. Enviamos un mail a tu correo electrónico. Por favor, siguelos pasos para verificar tu
+      cuenta.</p>
+  </div>
+</ng-template>

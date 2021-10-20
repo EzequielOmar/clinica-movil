@@ -1,0 +1,23 @@
+form {
+  border: solid 2px lightgray;
+  border-radius: 10px;
+  background: #d3d3d362;
+  color: #636060;
+}
+
+legend,
+label {
+  font-size: larger;
+  font-weight: bold;
+}
+
+input,button{
+  margin-bottom: 1rem;
+}
+
+/*Querys*/
+@media (max-width: 768px) {
+  input {
+    margin: 0 !important;
+  }
+}
