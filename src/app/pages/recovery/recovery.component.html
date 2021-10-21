@@ -1,9 +1,10 @@
 <div class="dogtor d-flex justify-content-center">
   <div class="container row justify-content-center align-items-center">
-    <form class="needs-validation col-md-8 text-center" [formGroup]="form" (ngSubmit)="send()">
+    <form *ngIf="!success else successSpan" class="needs-validation col-md-8 text-center" [formGroup]="form"
+      (ngSubmit)="send()">
       <div class="row m-3">
-        <legend>¡Bienvenido/a!</legend>
-        <span>Por favor, logueáte para ingresar a tu Perfil</span>
+        <legend>Escribe tu Email</legend>
+        <span>Recibirás un mensaje con instrucciones para recuperar tu contraseña</span>
       </div>
       <!--Error Messagge-->
       <div *ngIf="error then errorSpan"></div>
@@ -24,37 +25,14 @@
           </div>
         </div>
       </div>
-      <!--Password-->
-      <div class="col">
-        <label for="password">Contraseña</label>
-        <input minlength=6 maxlength=30 formControlName="password" required minlength="6" name="password"
-          type="password" placeholder="Ingresá una contraseña" class="form-control">
-        <div
-          *ngIf="form.controls['password'].errors?.required && (sended || form.controls['password'].touched) then reqError">
-        </div>
-        <div
-          *ngIf="form.controls['password'].errors?.minlength && (sended || form.controls['password'].touched) then minError">
-        </div>
-        <div
-          *ngIf="form.controls['password'].errors?.maxlength &&  (sended || form.controls['password'].touched) then maxError">
-        </div>
-      </div>
-      <!-- Forgot Password -->
-      <a (click)="forgotPass()">¿Olvidaste la constraseña?</a>
       <!--send-->
       <div class="row">
         <div class="col-6">
           <button (click)="cancel()" type="button" class="btn btn-secondary px-5 link py-2 my-3 ">Cancelar</button>
         </div>
-        <div class="col-6" *ngIf="!sended else loading">
-          <button type="submit" class="btn btn-primary px-5 link py-2 my-3">Entrar</button>
+        <div class="col-6" *ngIf="!spinner else loading">
+          <button type="submit" class="btn btn-primary px-5 link py-2 my-3">Recuperar Contraseña</button>
         </div>
-      </div>
-      <!-- Logueo Rapido-->
-      <div class="row">
-        <a class="col-4 px-3 text-secondary" (click)="fillForm('admin')">Logueo admin</a>
-        <a class="col-4 px-3 text-secondary" (click)="fillForm('specialist')">Logueo especialista</a>
-        <a class="col-4 px-3 text-secondary" (click)="fillForm('tester')">Logueo cliente</a>
       </div>
     </form>
   </div>
@@ -101,5 +79,13 @@
     <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
+  </div>
+</ng-template>
+<!--Success-->
+<ng-template #successSpan>
+  <div class="col-8 alert alert-info" role="alert">
+    <legend>¡Recibido!</legend>
+    <p>Revisa tu casilla de correo, sigue los pasos detallados en el email para recuperar tu contraseña</p>
+    <p>Paciencia. El mail puede tardar unos minutos. Si no recibes el mensaje, completá el formulario nuevamente.</p>
   </div>
 </ng-template>

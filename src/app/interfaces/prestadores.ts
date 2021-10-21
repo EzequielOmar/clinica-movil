@@ -4,5 +4,3 @@ export const Prestadores = [
   'Galeno',
   'Bristol',
 ];
-
-export const Especialidades = ['1asd', '2aa', '3a', '4'];

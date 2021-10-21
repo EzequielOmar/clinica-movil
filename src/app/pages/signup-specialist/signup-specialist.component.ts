@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Especialidades } from 'src/app/interfaces/lists';
+import { dbNames } from 'src/app/interfaces/dbNames';
+import { Especialista } from 'src/app/interfaces/user';
+import { DbService } from 'src/app/services/db/db.service';
 
 @Component({
   selector: 'app-signup-specialist',
@@ -13,7 +15,7 @@ export class SignupSpecialistComponent {
   form: FormGroup;
   persona: FormGroup;
   pass: FormGroup;
-  especialidades: Array<string> = Especialidades;
+  especialidades: Array<string> = [];
   file?: File;
   //status
   specialtieSelected: string = '';
@@ -22,7 +24,11 @@ export class SignupSpecialistComponent {
   error: boolean = false;
   success: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private db: DbService
+  ) {
     this.pass = this.fb.group({
       password: ['', Validators.required],
       passCheck: ['', Validators.required],
@@ -37,8 +43,9 @@ export class SignupSpecialistComponent {
     this.form = this.fb.group({
       persona: this.persona,
       especialidad: ['', Validators.required],
-      img_url: ['', Validators.required],
+      img_urls: ['', Validators.required],
     });
+    this.getSpecialities();
   }
 
   public saveCode(e: any): void {
@@ -55,13 +62,31 @@ export class SignupSpecialistComponent {
    */
   getImage(event: any) {
     this.file = event.target.files[0];
-    this.form.controls['img_url'].setValue(event.target.files[0] ?? '');
+    this.form.controls['img_urls'].setValue(event.target.files ?? '');
   }
 
   send() {
     this.sended = true;
-    if (this.form.valid) {
-      console.log(this.form);
+    if (this.validateForms()) {
+      let client: Especialista = this.form.value as Especialista;
+      console.log(typeof client);
     }
+  }
+
+  private getSpecialities() {
+    this.db.getDbOnce(dbNames.especialidades).then((snap: any) => {
+      snap.forEach((doc: any) => {
+        this.especialidades.push(doc.id);
+      });
+    });
+  }
+
+  private validateForms() {
+    return (
+      this.form.valid &&
+      this.pass.valid &&
+      this.pass.controls['password'].value ===
+        this.pass.controls['passCheck'].value
+    );
   }
 }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Prestadores } from 'src/app/interfaces/lists';
+import { Prestadores } from 'src/app/interfaces/prestadores';
+import { Paciente } from 'src/app/interfaces/user';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-signup-client',
@@ -21,7 +23,11 @@ export class SignupClientComponent implements OnInit {
   error: boolean = false;
   success: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private auth: AuthService
+  ) {
     this.pass = this.fb.group({
       password: ['', Validators.required],
       passCheck: ['', Validators.required],
@@ -57,8 +63,19 @@ export class SignupClientComponent implements OnInit {
 
   send() {
     this.sended = true;
-    if (this.form.valid && this.form.controls['img_urls'].value.length > 1) {
-      console.log(this.form);
+    if (this.validateForms()) {
+      let client: Paciente = this.form.value as Paciente;
+      console.log(typeof(client));
     }
+  }
+
+  private validateForms() {
+    return (
+      this.form.valid &&
+      this.form.controls['img_urls'].value.length > 1 &&
+      this.pass.valid &&
+      this.pass.controls['password'].value ===
+        this.pass.controls['passCheck'].value
+    );
   }
 }

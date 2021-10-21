@@ -87,8 +87,9 @@
     <div class="col-6">
       <label for="f_nac">Fecha de nacimiento</label>
       <div class="input-group date">
-        <input [minDate]="getMinDate()" [maxDate]="getMaxDate()" formControlName="f_nac" required class="form-control"
-          placeholder="yyyy-mm-dd" type="text" name="dp" ngbDatepicker #dp="ngbDatepicker">
+        <input [minDate]="getMinDate()" [maxDate]="getMaxDate()"
+          formControlName="f_nac" required class="form-control" placeholder="yyyy-mm-dd" type="text" name="dp"
+          ngbDatepicker #dp="ngbDatepicker">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -103,6 +104,9 @@
       </div>
       <div
         *ngIf="person.controls['f_nac'].errors?.required && (sended || person.controls['f_nac'].touched) then reqError">
+      </div>
+      <div
+        *ngIf="person.controls['f_nac'].errors?.ngbDate.invalid && (sended || person.controls['f_nac'].touched) then patError">
       </div>
       <div class="invalid-feedback d-block" style="width: 100%;"
         *ngIf="person.controls['f_nac'].errors?.ngbDate.minDate && (sended || person.controls['f_nac'].touched)">

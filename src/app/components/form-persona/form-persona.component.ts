@@ -1,11 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { CustomDateAdapter } from 'src/app/services/CustomDateAdapter/custom-date-adapter.service';
+import { CustomDateParserFormatter } from 'src/app/services/CustomDateParserFormatter/custom-date-parser-formatter.service';
 
 @Component({
   selector: 'app-form-persona',
   templateUrl: './form-persona.component.html',
   styleUrls: ['.././../pages/signup-client/signup-client.component.scss'],
+  providers: [
+    { provide: NgbDateAdapter, useClass: CustomDateAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+  ],
 })
 export class FormPersonaComponent implements OnInit {
   @Input() person!: FormGroup;

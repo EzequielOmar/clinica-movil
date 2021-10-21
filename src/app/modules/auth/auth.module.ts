@@ -8,6 +8,8 @@ import { SignupSpecialistComponent } from 'src/app/pages/signup-specialist/signu
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormPersonaComponent } from 'src/app/components/form-persona/form-persona.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RecoveryComponent } from 'src/app/pages/recovery/recovery.component';
+import { DbService } from 'src/app/services/db/db.service';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SignupClientComponent,
     SignupSpecialistComponent,
     FormPersonaComponent,
+    RecoveryComponent,
   ],
   imports: [
     CommonModule,
@@ -23,5 +26,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     NgbModule,
   ],
+  providers: [DbService],
 })
 export class AuthModule {}
