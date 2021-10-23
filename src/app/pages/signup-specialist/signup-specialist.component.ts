@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { dbNames } from 'src/app/interfaces/dbNames';
-import { Especialista } from 'src/app/interfaces/user';
+import { User } from 'src/app/interfaces/user';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { DbService } from 'src/app/services/db/db.service';
 
 @Component({
@@ -13,12 +14,11 @@ import { DbService } from 'src/app/services/db/db.service';
 export class SignupSpecialistComponent {
   //forms
   form: FormGroup;
-  persona: FormGroup;
+  person: FormGroup;
   pass: FormGroup;
-  especialidades: Array<string> = [];
-  file?: File;
+  specialties: Array<string> = [];
+  files: Array<File> = [];
   //status
-  specialtieSelected: string = '';
   sended: boolean = false;
   spinner: boolean = false;
   error: boolean = false;
@@ -27,13 +27,14 @@ export class SignupSpecialistComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private db: DbService
+    private db: DbService,
+    private auth: AuthService
   ) {
     this.pass = this.fb.group({
       password: ['', Validators.required],
       passCheck: ['', Validators.required],
     });
-    this.persona = this.fb.group({
+    this.person = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       f_nac: ['', Validators.required],
@@ -41,42 +42,49 @@ export class SignupSpecialistComponent {
       mail: ['', Validators.required],
     });
     this.form = this.fb.group({
-      persona: this.persona,
-      especialidad: ['', Validators.required],
-      img_urls: ['', Validators.required],
+      especialidad: [[], Validators.required],
+      img_urls: [[]],
     });
     this.getSpecialities();
-  }
-
-  public saveCode(e: any): void {
-    console.log(e);
   }
 
   cancel() {
     this.router.navigate(['/home']);
   }
 
-  /**
-   * Guarda el archivo temporal, y settea el FormField con el nombre del archivo
-   * @param event Recibe el evento de cambio en el input de imagen
-   */
   getImage(event: any) {
-    this.file = event.target.files[0];
-    this.form.controls['img_urls'].setValue(event.target.files ?? '');
+    this.files = event.target.files;
+  }
+
+  addSpecialtie(specialtie: string) {
+    if (specialtie) this.newSpecialtie(specialtie);
   }
 
   send() {
     this.sended = true;
     if (this.validateForms()) {
-      let client: Especialista = this.form.value as Especialista;
-      console.log(typeof client);
+      this.spinner = true;
+      let user: User = { ...this.form.value, ...this.person.value };
+      this.auth
+        .signUp(user, this.pass.controls['password'].value, this.files)
+        .then((res) => {
+          this.auth.signOut(res.user?.uid ?? '');
+          this.success = true;
+        })
+        .catch((e) => {
+          this.error = e.message;
+        })
+        .finally(() => {
+          this.spinner = false;
+        });
     }
   }
 
   private getSpecialities() {
-    this.db.getDbOnce(dbNames.especialidades).then((snap: any) => {
+    this.specialties = [];
+    this.db.getObserverDb(dbNames.specialties).onSnapshot((snap: any) => {
       snap.forEach((doc: any) => {
-        this.especialidades.push(doc.id);
+        this.specialties.push(doc.id);
       });
     });
   }
@@ -88,5 +96,16 @@ export class SignupSpecialistComponent {
       this.pass.controls['password'].value ===
         this.pass.controls['passCheck'].value
     );
+  }
+
+  private newSpecialtie(specialtie: string) {
+    specialtie =
+      specialtie.charAt(0).toLocaleUpperCase() +
+      specialtie.slice(1).toLowerCase();
+    if (
+      !this.specialties.includes(specialtie) &&
+      /^[a-zA-Z]+$/.test(specialtie)
+    )
+      this.db.setWithId(dbNames.specialties, specialtie);
   }
 }

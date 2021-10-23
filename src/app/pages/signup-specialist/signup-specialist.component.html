@@ -3,25 +3,36 @@
     <form *ngIf="!success else successSpan" class="needs-validation col-md-8 text-center" [formGroup]="form"
       (ngSubmit)="send()">
       <div class="row m-3">
-        <legend>Completá el formulario</legend>
-        <span>Comenzarás a recibir la mejor atención luego de registrarse.</span>
+        <legend>Trabajá con nosotros.</legend>
+        <span>Nuestro equipo no para de crecer. Disponemos de los mejores talentos.</span>
       </div>
       <!--Error Messagge-->
       <div *ngIf="error then errorSpan"></div>
       <!--Form Persona-->
-      <app-form-persona [pass]="pass" [person]="persona" [sended]="sended"></app-form-persona>
+      <app-form-persona [pass]="pass" [person]="person" [sended]="sended"></app-form-persona>
       <div class="row">
         <!--Especialidad-->
         <div class="col-md-6">
           <label for="especialidad">Especialidad</label>
-          <input formControlName="especialidad" class="form-control" type="text" list="specialties"
-            [value]="specialtieSelected">
-          <datalist id="specialties">
-            <option *ngFor="let item of especialidades" [value]="item">{{item}}</option>
-          </datalist>
-          <div
-            *ngIf="form.controls['especialidad'].errors?.required && (sended||form.controls['especialidad'].touched)  then reqError">
-          </div>
+          <mat-form-field class="mat-selector">
+            <mat-label>Elejir al menos una</mat-label>
+            <mat-select formControlName="especialidad" multiple required>
+              <mat-option *ngFor="let specialtie of specialties" [value]="specialtie">{{specialtie}}</mat-option>
+              <div class="input-group">
+                <input #newSpecialtie class="form-control m-0" type="text" placeholder="Agregar Especialidad">
+                <div class="input-group-append">
+                  <button (click)="addSpecialtie(newSpecialtie.value)" class="btn btn-outline-secondary m-0"
+                    type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-plus"
+                      viewBox="0 0 16 16">
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </mat-select>
+          </mat-form-field>
         </div>
         <!--Imágen-->
         <div class="col-md-6">
@@ -31,7 +42,7 @@
               accept=".jpeg,.jpg,.png,.svg" multiple="multiple">
           </label>
           <!--Errores-->
-          <div *ngIf="form.controls['img_urls'].errors?.required && sended then reqError">
+          <div *ngIf="!files.length && sended then reqError">
           </div>
         </div>
       </div>
@@ -85,7 +96,7 @@
 <ng-template #errorSpan>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Algo ha salido mal.</strong>
-    Error en los datos.
+    {{error}}
     <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -94,10 +105,10 @@
 <!--Success-->
 <ng-template #successSpan>
   <div class="col-8 alert alert-info" role="alert">
-    <legend>Recibido</legend>
-    <p>Hemos recibido tu aplicación. Evaluaremos tus datos y luego enviaremos un mensaje a tu
-      correo electrónico para que verifiques tu cuenta.</p>
-    <p>Paciencia. Este proceso puede tardar unos días.</p>
-    <strong (click)="cancel()">Volver</strong>
+    <legend>¡Gracias por elegirnos!</legend>
+    <p>Enviamos un mensaje a tu correo electrónico. Por favor, sigue los pasos y verifica tu
+      cuenta.</p>
+    <p>Tené en cuenta que tu perfil es sometido a una evaluación, y la aprobación puede tardar unos días.</p>
+    <p>Tené paciencia, te enviaremos un mensaje cuando tu cuenta esté activada.</p>
   </div>
 </ng-template>

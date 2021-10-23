@@ -10,6 +10,7 @@ import { FormPersonaComponent } from 'src/app/components/form-persona/form-perso
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecoveryComponent } from 'src/app/pages/recovery/recovery.component';
 import { DbService } from 'src/app/services/db/db.service';
+import { MaterialModule } from '../material/material.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { DbService } from 'src/app/services/db/db.service';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    MaterialModule,
   ],
   providers: [DbService],
 })
