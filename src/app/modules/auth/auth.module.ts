@@ -11,6 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecoveryComponent } from 'src/app/pages/recovery/recovery.component';
 import { DbService } from 'src/app/services/db/db.service';
 import { MaterialModule } from '../material/material.module';
+import { IconsModule } from '../feather-icons/feather.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MaterialModule } from '../material/material.module';
     ReactiveFormsModule,
     NgbModule,
     MaterialModule,
+    IconsModule,
   ],
   providers: [DbService],
 })

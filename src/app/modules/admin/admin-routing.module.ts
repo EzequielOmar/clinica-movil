@@ -1,9 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from 'src/app/pages/admin/admin-dashboard/admin-dashboard.component';
+import { SpecialistPanelComponent } from 'src/app/pages/admin/specialist-panel/specialist-panel.component';
+import { UserPanelComponent } from 'src/app/pages/admin/user-panel/user-panel.component';
 
 const routes: Routes = [
-  { path: 'dashboard', component: AdminDashboardComponent },
+  {
+    path: 'dashboard',
+    component: AdminDashboardComponent,
+    children: [
+      {
+        path: '',
+        component: SpecialistPanelComponent,
+        outlet: 'adminMenu',
+      },
+      {
+        path: 'user',
+        component: UserPanelComponent,
+        outlet: 'adminMenu',
+      },
+    ],
+  },
 ];
 
 @NgModule({
@@ -11,3 +28,26 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AdminRoutingModule {}
+
+/*
+
+  path: 'lobby',
+    component: HomeComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
+    children: [
+      {
+        path: '',
+        component: LobbyComponent,
+        outlet: 'menuList',
+      },
+      {
+        path: 'about',
+        component: AboutMeComponent,
+        outlet: 'menuList',
+      },
+
+      {
+        path: 'home',
+        redirectTo: 'lobby',
+        pathMatch: 'full',*/

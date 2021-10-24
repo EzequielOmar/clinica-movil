@@ -11,24 +11,17 @@ import { HomeComponent } from './pages/home/home.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { IconsModule } from './modules/feather-icons/feather.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    ErrorComponent,
-  ],
+  declarations: [AppComponent, HomeComponent, ErrorComponent],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     BrowserModule,
     AppRoutingModule,
-    //provideFirebaseApp(() => initializeApp(environment.firebase)),
-    //provideAuth(() => getAuth()),
-    //provideFirestore(() => getFirestore()),
-    //provideStorage(() => getStorage()),
     NgbModule,
     NoopAnimationsModule,
-
+    IconsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
