@@ -1,4 +1,5 @@
 export const dbNames = {
-  especialidades: 'Especialidades',
+  specialties: 'Especialidades',
   logs: 'Logs',
+  users: 'Usuarios',
 };

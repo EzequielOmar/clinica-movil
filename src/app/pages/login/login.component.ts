@@ -12,7 +12,8 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   //status
   sended: boolean = false;
-  error: boolean = false;
+  spinner: boolean = false;
+  error: string = '';
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -54,6 +55,21 @@ export class LoginComponent implements OnInit {
   send() {
     this.sended = true;
     if (this.form.valid) {
+      this.spinner = true;
+      this.auth
+        .signIn(
+          this.form.controls['mail'].value,
+          this.form.controls['password'].value
+        )
+        .then(() => {
+          this.router.navigate(['/']);
+        })
+        .catch((err) => {
+          this.error = err.message;
+        })
+        .finally(() => {
+          this.spinner = false;
+        });
     }
   }
 }

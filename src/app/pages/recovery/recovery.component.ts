@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-recovery',
@@ -14,10 +15,14 @@ export class RecoveryComponent implements OnInit {
   //status
   sended: boolean = false;
   spinner: boolean = false;
-  error: boolean = false;
+  error: string = '';
   success: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private auth: AuthService
+  ) {
     this.form = this.fb.group({
       mail: ['', Validators.required],
     });
@@ -30,6 +35,16 @@ export class RecoveryComponent implements OnInit {
   }
 
   send() {
-    console.log(this.form);
+    this.sended = true;
+    if (this.form.valid) {
+      this.auth
+        .passRecovery(this.form.controls['mail'].value)
+        .then(() => {
+          this.success = true;
+        })
+        .catch((err) => {
+          this.error = err.message;
+        });
+    }
   }
 }
