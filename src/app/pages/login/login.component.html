@@ -46,7 +46,7 @@
         <div class="col-6">
           <button (click)="cancel()" type="button" class="btn btn-secondary px-5 link py-2 my-3 ">Cancelar</button>
         </div>
-        <div class="col-6" *ngIf="!spinner else loading">
+        <div class="col-6" *ngIf="!sended else loading">
           <button type="submit" class="btn btn-primary px-5 link py-2 my-3">Entrar</button>
         </div>
       </div>
@@ -97,8 +97,8 @@
 <ng-template #errorSpan>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Algo ha salido mal.</strong>
-    {{error}}
-    <button (click)="error=''" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
+    Error en los datos.
+    <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>

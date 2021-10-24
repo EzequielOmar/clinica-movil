@@ -10,8 +10,11 @@ import { FormPersonaComponent } from 'src/app/components/form-persona/form-perso
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecoveryComponent } from 'src/app/pages/recovery/recovery.component';
 import { DbService } from 'src/app/services/db/db.service';
+<<<<<<< HEAD
 import { MaterialModule } from '../material/material.module';
 import { IconsModule } from '../feather-icons/feather.module';
+=======
+>>>>>>> parent of de85c4a... casi terminando logueo
 
 @NgModule({
   declarations: [
@@ -27,8 +30,11 @@ import { IconsModule } from '../feather-icons/feather.module';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+<<<<<<< HEAD
     MaterialModule,
     IconsModule,
+=======
+>>>>>>> parent of de85c4a... casi terminando logueo
   ],
   providers: [DbService],
 })

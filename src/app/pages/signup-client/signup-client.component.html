@@ -29,9 +29,10 @@
               accept=".jpeg,.jpg,.png,.svg" multiple="multiple">
           </label>
           <!--Errores-->
-          <div *ngIf="!files.length&& sended then reqError">
+          <div *ngIf="form.controls['img_urls'].errors?.required && sended then reqError">
           </div>
-          <div class="invalid-feedback d-block" style="width: 100%;" *ngIf="files.length < 2 && sended ">
+          <div class="invalid-feedback d-block" style="width: 100%;"
+            *ngIf="form.controls['img_urls'].value.length < 2 && sended ">
             *Es necesario ingresar al menos dos imágenes para registrarse*
           </div>
         </div>
@@ -86,8 +87,8 @@
 <ng-template #errorSpan>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Algo ha salido mal.</strong>
-    {{error}}
-    <button (click)="error=''" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
+    Error en los datos.
+    <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -95,8 +96,8 @@
 <!--Success-->
 <ng-template #successSpan>
   <div class="col-8 alert alert-info" role="alert">
-    <legend>¡Gracias por elegirnos!</legend>
-    <p>Enviamos un mensaje a tu correo electrónico. Por favor, sigue los pasos y verifica tu
+    <legend>¡Felicitaciones!</legend>
+    <p>Gracias por elegirnos. Enviamos un mail a tu correo electrónico. Por favor, siguelos pasos para verificar tu
       cuenta.</p>
   </div>
 </ng-template>

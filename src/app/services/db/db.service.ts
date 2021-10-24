@@ -17,7 +17,7 @@ export class DbService {
    * @param data datos a guardar en documento (puede ser cualquier objeto)
    * * Exito -> sin retorno | Error -> imprime error, y retorna mensaje para imprimir en pantalla *
    */
-  setWithId = async (database: string, docName: string, data: any = {}) => {
+  setWithId = async (database: string, docName: string, data: any) => {
     await this.db
       .collection(database)
       .doc(docName)
@@ -139,7 +139,7 @@ export class DbService {
    * @returns un Observable al documento solicitado
    */
   getObserverDoc(database: string, docName: string) {
-    return this.db.collection(database).doc(docName).snapshotChanges();
+    return this.db.collection(database).doc(docName).valueChanges();
   }
 
   /*
@@ -149,6 +149,8 @@ export class DbService {
    * @returns un Observable a la coleccion solicitada
    */
   getObserverDb(database: string) {
-    return this.db.firestore.collection(database);
+    return this.db.collection(database).valueChanges();
   }
+
+
 }

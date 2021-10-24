@@ -75,8 +75,8 @@
 <ng-template #errorSpan>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Algo ha salido mal.</strong>
-   {{error}}
-    <button (click)="error=''" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
+    Error en los datos.
+    <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -85,8 +85,7 @@
 <ng-template #successSpan>
   <div class="col-8 alert alert-info" role="alert">
     <legend>¡Recibido!</legend>
-    <p>Revisa tu casilla de correo electrónico, sigue los pasos detallados en el mensaje para recuperar tu contraseña
-    </p>
-    <p>Paciencia. Si no recibes el mensaje luego de unos minutos, completá el formulario nuevamente.</p>
+    <p>Revisa tu casilla de correo, sigue los pasos detallados en el email para recuperar tu contraseña</p>
+    <p>Paciencia. El mail puede tardar unos minutos. Si no recibes el mensaje, completá el formulario nuevamente.</p>
   </div>
 </ng-template>

@@ -1,6 +1,6 @@
 export const events = {
-  newUser: 0,
-  logIn: 1,
+  signUpEmailPass: 0,
+  logInEmailPass: 1,
   logOut: 2,
   updateProfile: 3,
   deleteProfile: 4,
@@ -8,7 +8,6 @@ export const events = {
 
 export interface Log {
   uid: string;
+  event: string;
   datetime: string; //Data.toLocalString()
-  event: number;
-  type:number;//0 -1 - 2 | Admin - specialist - client
 }

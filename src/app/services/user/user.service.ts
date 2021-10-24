@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { dbNames } from 'src/app/interfaces/dbNames';
-import { User } from 'src/app/interfaces/user';
 import { DbService } from '../db/db.service';
+import { dbNames } from 'src/app/interfaces/dbNames';
+import { User } from '@firebase/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   constructor(private db: DbService) {}
-
-  newUser(uid: string, user: User) {
-    this.db.setWithId(dbNames.users, uid, user);
+/*
+  newUser(uid: string, user: UserData) {
+    this.db.setWithId(databases.users, uid, user);
   }
 
-  getUser = async (uid: string): Promise<User> =>
+  exists = async (uid: string) =>
     await this.db
-      .getDocOnce(dbNames.users, uid)
-      .then((doc: any) => doc.data() as User)
-      .catch((err) => err);
+      .getDocOnce(databases.users, uid)
+      .then(() => true)
+      .catch(() => false);*/
 }
