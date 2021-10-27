@@ -8,9 +8,14 @@
   </button>
   <div class="collapse navbar-collapse justify-content-end" [class.show]="show">
     <ul class="navbar-nav mt-2 mt-lg-0 mx-3">
-      <li class="nav-item active">
+      <li *ngIf="!user else logout" class="nav-item active">
         <a class="nav-link" (click)="goToLogin()">Entrar</a>
       </li>
+      <ng-template #logout>
+        <li class="nav-item active">
+          <a class="nav-link" (click)="logOut()">Salir</a>
+        </li>
+      </ng-template>
       <!--
 
         <li class="nav-item">

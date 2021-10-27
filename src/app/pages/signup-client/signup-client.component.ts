@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Prestadores } from 'src/app/interfaces/prestadores';
+import { setUserType } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { FileService } from 'src/app/services/file/file.service';
 
 @Component({
   selector: 'app-signup-client',
@@ -25,7 +27,8 @@ export class SignupClientComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private file: FileService
   ) {
     this.pass = this.fb.group({
       password: ['', Validators.required],
@@ -54,15 +57,26 @@ export class SignupClientComponent implements OnInit {
     this.files = event.target.files;
   }
 
+  goToLogin() {
+    this.router.navigate(['auth/login']);
+  }
+
   send() {
     this.sended = true;
     if (this.validateForms()) {
       this.spinner = true;
       let user = { ...this.form.value, ...this.persona.value };
+      setUserType(user);
       this.auth
         .signUp(user, this.pass.controls['password'].value, this.files)
         .then((res) => {
-          this.auth.signOut(res.user?.uid ?? '');
+          this.file
+            .handleFiles(user, res.user?.uid ?? '', this.files)
+            .then(() => {
+              this.auth.manageUserData(user, res).then(() => {
+                this.auth.signOut(res.user?.uid ?? '', user.tipo);
+              });
+            });
           this.success = true;
         })
         .catch((e) => {

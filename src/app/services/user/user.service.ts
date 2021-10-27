@@ -9,9 +9,9 @@ import { DbService } from '../db/db.service';
 export class UserService {
   constructor(private db: DbService) {}
 
-  newUser(uid: string, user: User) {
-    this.db.setWithId(dbNames.users, uid, user);
-  }
+  newUser = async (uid: string, user: User) => {
+    await this.db.setWithId(dbNames.users, uid, user);
+  };
 
   getUser = async (uid: string): Promise<User> =>
     await this.db

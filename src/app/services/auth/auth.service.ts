@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
+import { Subscription } from 'rxjs';
 import { events } from 'src/app/interfaces/log';
 import { setUserType, User, UserProfiles } from 'src/app/interfaces/user';
 import { FileService } from '../file/file.service';
@@ -11,8 +12,9 @@ import { Validator } from './Validators';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  private user: firebase.User | null = null;
+export class AuthService implements OnDestroy {
+  sub?: Subscription;
+  private user: any | null = null;
 
   constructor(
     private angularFireAuth: AngularFireAuth,
@@ -20,27 +22,19 @@ export class AuthService {
     private userDb: UserService,
     private log: LogService
   ) {
-    angularFireAuth.authState.subscribe((u) => {
-      this.user = u;
-    });
-  }
-
-  // Obtener True o false si hay un usuario logueado
-  get authenticated(): boolean {
-    return this.user != null; // True ó False
+    this.listenUser();
   }
 
   // Obtener los datos del usuario logueado, o null si no hubiere
-  get currentUser(): firebase.User | null {
+  get currentUser(): any | null {
     return this.user;
   }
 
   signIn = async (email: string, password: string) =>
     await this.angularFireAuth
       .signInWithEmailAndPassword(Validator.email(email), password)
-      .then((res) => {
-        this.checkLogIn(res);
-        return res;
+      .then(async (res) => {
+        await this.handleLogin(res).then(() => res);
       })
       .catch((error) => {
         if (error.code === 'auth/user-disabled')
@@ -53,9 +47,8 @@ export class AuthService {
   signUp = async (user: User, password: string, files: Array<File>) =>
     await this.angularFireAuth
       .createUserWithEmailAndPassword(Validator.email(user.mail), password)
-      .then((res) => {
-        this.checkSignUp(res, user, files);
-        return res;
+      .then(async (res) => {
+        return await this.handleSignUp(res, user, files).then(() => res);
       })
       .catch((error) => {
         if (error.code === 'auth/operation-not-allowed')
@@ -71,50 +64,68 @@ export class AuthService {
       .catch(() => new Error('Email incorrecto.'));
   };
 
-  signOut = async (uid: string) => {
+  signOut = async (uid: string, tipo: number) => {
     await this.angularFireAuth.signOut().then(() => {
-      this.userDb.getUser(uid).then((u: User) => {
-        this.log.saveEvent(uid, events.logOut, u.tipo);
-      });
+      this.log.saveEvent(uid, events.logOut, tipo);
     });
   };
 
-  private checkLogIn(res: any) {
-    //check email verifification
-    if (!res.user?.emailVerified) {
-      this.sendVerificationEmail();
-      throw new Error('Verificá tu email para loguearte');
-    }
-    this.userDb.getUser(res.user?.uid ?? '').then((u: User) => {
-      //check admin validation
-      if (u.tipo === UserProfiles.specialist)
-        this.userDb.getUser(res.user?.uid ?? '').then((user: any) => {
-          if (!user.verificado)
-            throw new Error('Tu perfil no ha sido aprobado aún.');
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+  }
+
+  private listenUser() {
+    this.sub = this.angularFireAuth.authState.subscribe(async (authUser) => {
+      this.user = authUser;
+      if (authUser)
+        await this.userDb.getUser(authUser.uid ?? '').then((dbUser) => {
+          this.user.tipo = dbUser.tipo;
         });
-      //save log
-      this.log.saveEvent(res.user?.uid ?? '', events.logIn, u.tipo);
     });
   }
 
-  private checkSignUp(res: any, user: User, files: Array<File>) {
-    //settea el tipo de usuario
-    setUserType(user);
-    //actualiza el perfil de auth (guarda variable para authenticar)
-    this.updateUserProfileNameAndType(user);
-    //envia mail de verificacion
-    this.sendVerificationEmail().then((sended: boolean | undefined) => {
-      if (!sended)
-        throw new Error(
-          'No se pudo enviar el email de verificación. Por favor ingrese un email válido.'
-        );
-      //guarda imagenes, datos y logs
-      this.handleFiles(user, res.user?.uid ?? '', files).then(() => {
-        this.userDb.newUser(res.user?.uid ?? '', user);
-        this.log.saveEvent(res.user?.uid ?? '', events.newUser, user.tipo);
-      });
+  /**
+   * 1- Chequea que el email este verificado
+   * 2- Chequea que el perfil del especialista este aprobado por un admin (solo perfil correspondiente)
+   * 3- Guarda el evento de logueo en la coleccion Logs
+   * Retorna errores con mensaje para mostrar.
+   * @param res
+   */
+  private handleLogin = async (res: any) => {
+    //check email verifification
+    if (!res.user?.emailVerified) {
+      this.sendVerificationEmail();
+      throw new Error(
+        'Tu correo electrónico no ha sido verificado. Por favor verifícalo para ingresar.'
+      );
+    }
+    await this.userDb.getUser(res.user?.uid ?? '').then((user: any) => {
+      //check admin/specialist validation
+      if (user.tipo === UserProfiles.specialist && !user.verificado)
+        throw new Error('Tu perfil no ha sido aprobado aún.');
+      //save log
+      this.log.saveEvent(res.user?.uid ?? '', events.logIn, user.tipo);
     });
-  }
+  };
+
+  /**
+   * 1- Setea la variable tipo en el usuario, para identificar los perfiles.
+   * 2- Envía mail de verificación | retorna error con mensaje para mostrar si no se pudo enviar
+   * 3- Maneja los datos del usuario guardando logs, archivos, datos (y actualizando el perfil del auth user)
+   * Retorna errores con mensaje para mostrar.
+   * @param res
+   */
+  private handleSignUp = async (res: any, user: User, files: Array<File>) => {
+    //envia mail de verificacion
+    await this.sendVerificationEmail().then(
+      async (sended: boolean | undefined) => {
+        if (!sended)
+          throw new Error(
+            'No se pudo enviar el email de verificación. Por favor ingrese un email válido.'
+          );
+      }
+    );
+  };
 
   private sendVerificationEmail = async (): Promise<boolean | undefined> =>
     await firebase
@@ -123,16 +134,22 @@ export class AuthService {
       .then(() => true)
       .catch(() => false);
 
-  private updateUserProfileNameAndType(user: User) {
+  manageUserData = async (user: User, res: any /*, files: File[]*/) => {
+    //guarda imagenes, datos y logs
+    // await this.handleFiles(user, res.user?.uid ?? '', files).then(() => {
+    await Promise.all([
+      await this.userDb.newUser(res.user?.uid ?? '', user),
+      await this.log.saveEvent(res.user?.uid ?? '', events.newUser, user.tipo),
+    ]);
+    //actualiza el perfil de auth
+    this.updateAuthUserProfile(user);
+    // });
+  };
+
+  private updateAuthUserProfile(user: User) {
     firebase.auth().currentUser?.updateProfile({
       displayName: user.apellido + ', ' + user.nombre,
+      photoURL: user.img_urls[0] ?? '',
     });
   }
-
-  private handleFiles = async (user: User, uid: string, files: Array<File>) =>
-    Array.from(files).forEach(async (file: any) => {
-      user.img_urls.push(
-        await this.file.uploadAndGetLink(uid, file).then((url) => url)
-      );
-    });
 }

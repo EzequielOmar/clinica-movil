@@ -64,8 +64,8 @@ export class LoginComponent implements OnInit {
         .then(() => {
           this.router.navigate(['/']);
         })
-        .catch((err) => {
-          this.error = err.message;
+        .catch((e) => {
+          this.error = e.message;
         })
         .finally(() => {
           this.spinner = false;

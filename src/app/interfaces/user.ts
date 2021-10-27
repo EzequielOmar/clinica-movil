@@ -56,9 +56,9 @@ function isAdmin(object: unknown): object is Admin {
 }
 
 export const UserProfiles = {
-  admin: 0,
-  specialist: 1,
-  pacient: 2,
+  admin: 1,
+  specialist: 2,
+  pacient: 3,
 };
 
 export type User = Admin | Especialista | Paciente;

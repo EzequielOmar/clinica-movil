@@ -14,13 +14,13 @@ export class LogService {
    * Guarda el evento, en coleccion logs documento nombre random.
    * @param uid user id
    * @param event evento (interface de evento)
-   * @param type tipo de usuario 0-> admin 1-> especialista 2->cliente
+   * @param type tipo de usuario 1-> admin 2-> especialista 3->cliente
    */
-  saveEvent(uid: string, event: number, type: number) {
+  saveEvent = async (uid: string, event: number, type: number) => {
     this.log.datetime = new Date().toLocaleString();
     this.log.event = event;
     this.log.uid = uid;
     this.log.type = type;
-    this.db.set(dbNames.logs, this.log);
-  }
+    await this.db.set(dbNames.logs, this.log);
+  };
 }

@@ -1,14 +1,14 @@
 export const events = {
-  newUser: 0,
-  logIn: 1,
-  logOut: 2,
-  updateProfile: 3,
-  deleteProfile: 4,
+  newUser: 1,
+  logIn: 2,
+  logOut: 3,
+  updateProfile: 4,
+  deleteProfile: 5,
 };
 
 export interface Log {
   uid: string;
   datetime: string; //Data.toLocalString()
   event: number;
-  type:number;//0 -1 - 2 | Admin - specialist - client
+  type: number; //1 - 2 - 3 | Admin - specialist - client
 }

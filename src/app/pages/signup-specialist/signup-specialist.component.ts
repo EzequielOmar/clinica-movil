@@ -5,6 +5,7 @@ import { dbNames } from 'src/app/interfaces/dbNames';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DbService } from 'src/app/services/db/db.service';
+import { FileService } from 'src/app/services/file/file.service';
 
 @Component({
   selector: 'app-signup-specialist',
@@ -22,13 +23,14 @@ export class SignupSpecialistComponent {
   sended: boolean = false;
   spinner: boolean = false;
   error: boolean = false;
-  success: boolean = false;
+  success: boolean = true;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private db: DbService,
-    private auth: AuthService
+    private auth: AuthService,
+    private file: FileService
   ) {
     this.pass = this.fb.group({
       password: ['', Validators.required],
@@ -60,6 +62,10 @@ export class SignupSpecialistComponent {
     if (specialtie) this.newSpecialtie(specialtie);
   }
 
+  goHome() {
+    this.router.navigate(['/home']);
+  }
+
   send() {
     this.sended = true;
     if (this.validateForms()) {
@@ -68,7 +74,13 @@ export class SignupSpecialistComponent {
       this.auth
         .signUp(user, this.pass.controls['password'].value, this.files)
         .then((res) => {
-          this.auth.signOut(res.user?.uid ?? '');
+          this.file
+            .handleFiles(user, res.user?.uid ?? '', this.files)
+            .then(() => {
+              this.auth.manageUserData(user, res).then(() => {
+                this.auth.signOut(res.user?.uid ?? '', user.tipo);
+              });
+            });
           this.success = true;
         })
         .catch((e) => {
