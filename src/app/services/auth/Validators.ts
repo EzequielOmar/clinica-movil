@@ -10,3 +10,9 @@ export class Validator {
     return email;
   };
 }
+
+export const whiteList = [
+  'admin@admin.com',
+  'specialist@specialist.com',
+  'tester@tester.com',
+];

@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { dbNames } from 'src/app/interfaces/dbNames';
-import { User } from 'src/app/interfaces/user';
+import { setUserType, User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DbService } from 'src/app/services/db/db.service';
 import { FileService } from 'src/app/services/file/file.service';
@@ -23,7 +23,7 @@ export class SignupSpecialistComponent {
   sended: boolean = false;
   spinner: boolean = false;
   error: boolean = false;
-  success: boolean = true;
+  success: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -71,6 +71,7 @@ export class SignupSpecialistComponent {
     if (this.validateForms()) {
       this.spinner = true;
       let user: User = { ...this.form.value, ...this.person.value };
+      setUserType(user);
       this.auth
         .signUp(user, this.pass.controls['password'].value, this.files)
         .then((res) => {
@@ -93,8 +94,8 @@ export class SignupSpecialistComponent {
   }
 
   private getSpecialities() {
-    this.specialties = [];
     this.db.getObserverDb(dbNames.specialties).onSnapshot((snap: any) => {
+      this.specialties = [];
       snap.forEach((doc: any) => {
         this.specialties.push(doc.id);
       });
@@ -114,10 +115,9 @@ export class SignupSpecialistComponent {
     specialtie =
       specialtie.charAt(0).toLocaleUpperCase() +
       specialtie.slice(1).toLowerCase();
-    if (
-      !this.specialties.includes(specialtie) &&
-      /^[a-zA-Z]+$/.test(specialtie)
-    )
+    let rx =
+      /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;
+    if (!this.specialties.includes(specialtie) && rx.test(specialtie))
       this.db.setWithId(dbNames.specialties, specialtie);
   }
 }

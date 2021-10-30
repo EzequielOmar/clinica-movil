@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth/auth.service';
+
+import firebase from 'firebase/compat/app';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -9,21 +12,24 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./home.component.scss'],
   providers: [NgbCarouselConfig],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnDestroy {
   images = [1, 2, 3].map((n) => `/assets/carousel/${n}.jpg`);
   show: boolean = false;
   user?: any | null;
+  sub?: Subscription;
 
   constructor(
     config: NgbCarouselConfig,
     private router: Router,
     private Auth: AuthService
   ) {
-    setInterval(() => {
-      //console.log(this.Auth.currentUser);
-      console.log(this.Auth.currentUser);
-    }, 3000);
-
+    //this.sub = this.Auth.authUserObservable.subscribe((u) => (this.user = u));
+    this.sub = this.Auth.authUserObservable.subscribe((u) => {
+      this.user = u;
+      setInterval(() => {
+        console.log(this.user);
+      }, 3000);
+    });
     config.interval = 3000;
     config.wrap = true;
     config.keyboard = false;
@@ -32,7 +38,9 @@ export class HomeComponent implements OnInit {
     config.showNavigationIndicators = true;
   }
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
 
   toggleMenu() {
     this.show = !this.show;
@@ -51,6 +59,6 @@ export class HomeComponent implements OnInit {
   }
 
   logOut() {
-    //this.Auth.signOut(this.user.uid,);
+    this.Auth.signOut(this.user?.uid ?? '', this.user?.tipo ?? '');
   }
 }

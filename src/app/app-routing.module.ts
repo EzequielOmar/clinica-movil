@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserProfiles } from './interfaces/user';
 //modules
 import { ErrorComponent } from './pages/error/error.component';
 import { HomeComponent } from './pages/home/home.component';
-
-//const redirectLoggedToHome = () => redirectLoggedInTo(['home']);
-//const redirectUnauthorizedToLogin = () =>  redirectUnauthorizedTo(['/auth/login']);
+import { UserTypeGuardService } from './services/user-type-auth/user-type-auth.service';
 
 const routes: Routes = [
   {
@@ -16,6 +15,10 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () =>
       import('./modules/admin/admin.module').then((m) => m.AdminModule),
+    canActivate: [UserTypeGuardService],
+    data: {
+      expectedType: UserProfiles.admin,
+    },
   },
   {
     path: 'auth',

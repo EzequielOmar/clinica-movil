@@ -1,38 +1,50 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { events } from 'src/app/interfaces/log';
-import { setUserType, User, UserProfiles } from 'src/app/interfaces/user';
-import { FileService } from '../file/file.service';
+import { User, UserProfiles } from 'src/app/interfaces/user';
 import { LogService } from '../log/log.service';
 import { UserService } from '../user/user.service';
-import { Validator } from './Validators';
+import { Validator, whiteList } from './Validators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  sub?: Subscription;
+  private sub?: Subscription;
   private user: any | null = null;
 
   constructor(
     private angularFireAuth: AngularFireAuth,
-    private file: FileService,
     private userDb: UserService,
     private log: LogService
   ) {
     this.listenUser();
   }
 
-  // Obtener los datos del usuario logueado, o null si no hubiere
-  get currentUser(): any | null {
+  get authUserObservable(): Observable<firebase.User | null> {
+    return this.angularFireAuth.authState;
+  }
+
+  getCurrentUserType = async (uid: string): Promise<number | null> => {
+    return await this.userDb
+      .getUser(uid)
+      .then((dbUser) => dbUser.tipo)
+      .catch(() => null);
+  };
+
+  get currentUser(): firebase.User | null {
     return this.user;
+  }
+
+  get authenticated(): boolean {
+    return this.user ? true : false;
   }
 
   signIn = async (email: string, password: string) =>
     await this.angularFireAuth
-      .signInWithEmailAndPassword(Validator.email(email), password)
+      .signInWithEmailAndPassword(email, password)
       .then(async (res) => {
         await this.handleLogin(res).then(() => res);
       })
@@ -58,6 +70,7 @@ export class AuthService implements OnDestroy {
         throw error;
       });
 
+
   passRecovery = async (email: string) => {
     this.angularFireAuth
       .sendPasswordResetEmail(email)
@@ -79,7 +92,7 @@ export class AuthService implements OnDestroy {
       this.user = authUser;
       if (authUser)
         await this.userDb.getUser(authUser.uid ?? '').then((dbUser) => {
-          this.user.tipo = dbUser.tipo;
+          this.user.multiFactor.user.tipo = dbUser.tipo;
         });
     });
   }
@@ -93,7 +106,7 @@ export class AuthService implements OnDestroy {
    */
   private handleLogin = async (res: any) => {
     //check email verifification
-    if (!res.user?.emailVerified) {
+    if (!res.user?.emailVerified && !whiteList.includes(res.user.email)) {
       this.sendVerificationEmail();
       throw new Error(
         'Tu correo electrónico no ha sido verificado. Por favor verifícalo para ingresar.'

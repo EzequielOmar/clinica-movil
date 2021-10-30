@@ -34,15 +34,15 @@ export class LoginComponent implements OnInit {
   fillForm(user: string) {
     switch (user) {
       case 'admin':
-        this.form.controls['mail'].setValue('admin@gmail.com');
-        this.form.controls['password'].setValue('admin');
+        this.form.controls['mail'].setValue('admin@admin.com');
+        this.form.controls['password'].setValue('admin1');
         break;
       case 'specialist':
-        this.form.controls['mail'].setValue('specialist@gmail.com');
+        this.form.controls['mail'].setValue('specialist@specialist.com');
         this.form.controls['password'].setValue('specialist');
         break;
       case 'tester':
-        this.form.controls['mail'].setValue('tester@gmail.com');
+        this.form.controls['mail'].setValue('tester@tester.com');
         this.form.controls['password'].setValue('tester');
         break;
     }

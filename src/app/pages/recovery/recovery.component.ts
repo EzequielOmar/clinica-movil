@@ -34,6 +34,10 @@ export class RecoveryComponent implements OnInit {
     this.router.navigate(['/auth/login']);
   }
 
+  goLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+
   send() {
     this.sended = true;
     if (this.form.valid) {
