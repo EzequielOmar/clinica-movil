@@ -1,0 +1,17 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scroll {
+  *{
+    text-transform: capitalize;
+  }
+  position: relative;
+  height: 300px;
+  overflow: auto;
+}
+
+thead {
+  background: #dff4f9fa;
+}
+

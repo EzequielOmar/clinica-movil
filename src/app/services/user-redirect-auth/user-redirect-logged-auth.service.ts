@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { UserProfiles } from 'src/app/interfaces/user';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserTypeGuardService implements CanActivate {
+export class UserRedirectLogguedGuardService implements CanActivate {
   constructor(public auth: AuthService, public router: Router) {}
 
   canActivate = async (route: ActivatedRouteSnapshot): Promise<boolean> => {
-    const expectedType = route.data.expectedType;
     return new Promise((res) => {
       this.auth.authUserObservable.subscribe(async (u: any) => {
-        if (!u) this.declineAccess(res);
+        if (!u) res(true);
         await this.auth
           .getCurrentUserType(u.uid)
           .then((tipe: number | null) => {
-            tipe == expectedType ? res(true) : this.declineAccess(res);
+            switch (tipe) {
+              case UserProfiles.admin:
+                this.router.navigate(['/admin/']);
+                res(false);
+                break;
+              /*
+              case UserProfiles.admin:
+                this.router.navigate(['/admin/']);
+                break;
+                case UserProfiles.admin:
+                  this.router.navigate(['/admin/']);
+                  break;*/
+            }
           });
       });
     });
   };
-
-  private declineAccess(res: any) {
-    res(false);
-    this.router.navigate(['/auth/login']);
-  }
 }

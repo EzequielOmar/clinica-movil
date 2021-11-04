@@ -6,6 +6,9 @@ interface Persona {
   mail: string;
   img_urls: Array<string>;
   tipo: number;
+  creado: string;
+  modificado: string;
+  eliminado: string;
 }
 export interface Paciente extends Persona {
   obra_social: string;
@@ -62,6 +65,8 @@ export const UserProfiles = {
 };
 
 export type User = Admin | Especialista | Paciente;
+
+export type UserId = { id: string; data: User };
 
 export function setUserType(user: unknown): void {
   if (isAdmin(user)) user.tipo = UserProfiles.admin;

@@ -1,0 +1,38 @@
+<div class="d-block custom-scroll">
+  <table class="table">
+    <thead class="thead sticky-top">
+      <tr>
+        <th scope="col">Nombre Completo</th>
+        <th scope="col">DNI</th>
+        <th *ngIf="tipe===2" scope="col">Especialidad/es</th>
+        <th *if="tipe===2" scope="col">Creado</th>
+        <th *if="tipe===2" scope="col">Verificado</th>
+        <th *ngIf="tipe===3" scope="col">Obra Social</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr (click)="selectUser(user)" *ngFor="let user of users;let id" class="align-middle">
+        <!--Nombre-->
+        <td>{{user.data.apellido}}, {{user.data.nombre}}</td>
+        <!--Dni-->
+        <td> {{user.data.dni}}</td>
+        <!--Especialidad (personal)-->
+        <td *if="tipe===2">
+          <li style="list-style: none;" *ngFor="let esp of user.data.especialidad">
+            {{esp}}
+          </li>
+        </td>
+        <!--Creado (personal/admin)-->
+        <td *ngIf="tipe === 1 || tipe === 2">{{user.data.creado.split(' ')[0] }} </td>
+        <!--Verificado (personal)-->
+        <td *ngIf="tipe===2;">
+          <i-feather *ngIf="user.data.verificado;" name="check-circle" class="text-success"></i-feather>
+        </td>
+        <!--Obra Social (paciente)-->
+        <td *ngIf="tipe===3;">
+          {{user.data.obra_social}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -4,12 +4,14 @@ import { UserProfiles } from './interfaces/user';
 //modules
 import { ErrorComponent } from './pages/error/error.component';
 import { HomeComponent } from './pages/home/home.component';
+import { UserRedirectLogguedGuardService } from './services/user-redirect-auth/user-redirect-logged-auth.service';
 import { UserTypeGuardService } from './services/user-type-auth/user-type-auth.service';
 
 const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [UserRedirectLogguedGuardService],
   },
   {
     path: 'admin',

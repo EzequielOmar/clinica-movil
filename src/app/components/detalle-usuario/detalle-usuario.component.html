@@ -1,0 +1,46 @@
+<div class="row" *ngIf="user">
+  <div class="card my-3 col-8">
+    <div class="row no-gutters d-flex align-items-center">
+      <div class="col-md-4">
+        <img class="rounded col px-3" style="max-width: 10rem;" src="{{user.data.img_urls[0]}}" alt="user-image">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title text-capitalize">{{user.data.apellido}}, {{user.data.nombre}}</h5>
+          <div class="row mt-2">
+            <label>Edad: <strong>{{getEdad(user.data.f_nac)}} Años</strong> </label>
+          </div>
+          <div class="row mt-2 ">
+            <label>Correo: <strong>{{user.data.mail}}</strong></label>
+          </div>
+          <div *ngIf="user.data.especialidad" class="row mt-2">
+            <label>Especialidad/es:</label>
+            <li style="list-style: none;" *ngFor="let esp of user.data.especialidad">
+              <strong>{{esp}}</strong>
+            </li>
+          </div>
+          <div class="row mt-2 ">
+            <label>Perfil: <strong *ngIf="user.data.verificado">Verificado</strong> <strong
+                *ngIf="user.data.eliminado">Eliminado</strong> <strong
+                *ngIf="!user.data.verificado && !user.data.eliminado">Inhabilitado</strong></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-3 col-3 mx-3 h-auto">
+    <div *ngIf="!user.data.verificado" class="card bg-light d-block user-button p-2 m-2">
+      <i-feather class="text-success" name="check-circle"></i-feather>
+      Verificar perfil
+    </div>
+    <div *ngIf="user.data.verificado" class="card bg-light d-block user-button p-2 m-2">
+      <i-feather class="text-warning" name="lock"></i-feather>
+      Inhabilitar perfil
+    </div>
+    <div *ngIf="!user.data.verificado" class="card bg-light d-block user-button p-2 m-2">
+      <i-feather class="text-danger" name="crosshair"></i-feather>
+      Eliminar perfil
+    </div>
+  </div>
+</div>
