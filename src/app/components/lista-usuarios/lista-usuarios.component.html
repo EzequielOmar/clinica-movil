@@ -2,22 +2,25 @@
   <table class="table">
     <thead class="thead sticky-top">
       <tr>
+        <th *ngIf="tipe===1" scope="col">UID</th>
         <th scope="col">Nombre Completo</th>
         <th scope="col">DNI</th>
         <th *ngIf="tipe===2" scope="col">Especialidad/es</th>
-        <th *if="tipe===2" scope="col">Creado</th>
-        <th *if="tipe===2" scope="col">Verificado</th>
+        <th *ngIf="tipe === 1 || tipe === 2" scope="col">Creado</th>
+        <th *ngIf="tipe===2" scope="col">Verificado</th>
         <th *ngIf="tipe===3" scope="col">Obra Social</th>
       </tr>
     </thead>
     <tbody>
       <tr (click)="selectUser(user)" *ngFor="let user of users;let id" class="align-middle">
+        <!--UID (admin)-->
+        <td *ngIf="tipe===1">{{user.id}}</td>
         <!--Nombre-->
         <td>{{user.data.apellido}}, {{user.data.nombre}}</td>
         <!--Dni-->
         <td> {{user.data.dni}}</td>
         <!--Especialidad (personal)-->
-        <td *if="tipe===2">
+        <td *ngIf="tipe===2">
           <li style="list-style: none;" *ngFor="let esp of user.data.especialidad">
             {{esp}}
           </li>

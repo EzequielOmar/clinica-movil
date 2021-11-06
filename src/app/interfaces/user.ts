@@ -64,12 +64,15 @@ export const UserProfiles = {
   pacient: 3,
 };
 
-export type User = Admin | Especialista | Paciente;
+export type User = Admin | Especialista | Paciente; null
 
 export type UserId = { id: string; data: User };
 
-export function setUserType(user: unknown): void {
+export function setUserType(user: any): void {
   if (isAdmin(user)) user.tipo = UserProfiles.admin;
   if (isEspecialista(user)) user.tipo = UserProfiles.specialist;
   if (isPaciente(user)) user.tipo = UserProfiles.pacient;
+  user.creado = new Date().toLocaleString();
+  user.modificado = false;
+  user.eliminado = false;
 }

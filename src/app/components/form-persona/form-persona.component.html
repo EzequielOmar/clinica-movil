@@ -87,9 +87,8 @@
     <div class="col-6">
       <label for="f_nac">Fecha de nacimiento</label>
       <div class="input-group date">
-        <input [minDate]="getMinDate()" [maxDate]="getMaxDate()"
-          formControlName="f_nac" required class="form-control" placeholder="yyyy-mm-dd" type="text" name="dp"
-          ngbDatepicker #dp="ngbDatepicker">
+        <input [minDate]="getMinDate()" [maxDate]="getMaxDate()" formControlName="f_nac" required class="form-control"
+          placeholder="yyyy-mm-dd" type="text" name="dp" ngbDatepicker #dp="ngbDatepicker">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary p-1" (click)="dp.toggle()" type="button">
             <i-feather name="calendar"></i-feather>
@@ -104,11 +103,11 @@
       </div>
       <div class="invalid-feedback d-block" style="width: 100%;"
         *ngIf="person.controls['f_nac'].errors?.ngbDate.minDate && (sended || person.controls['f_nac'].touched)">
-        *La edad ingresada es muy grande*
+        *Lo siento, la edad ingresada es muy alta*
       </div>
       <div class="invalid-feedback d-block" style="width: 100%;"
         *ngIf="person.controls['f_nac'].errors?.ngbDate.maxDate && (sended || person.controls['f_nac'].touched)">
-        *Lo siento, tienes que ser mayor de 18, consulta por el paquete familiar*
+        *Lo siento, tienes que ser mayor de 18 años para ingresar*
       </div>
     </div>
     <!--Dni-->

@@ -4,6 +4,7 @@ import firebase from 'firebase/compat/app';
 import { Observable, Subscription } from 'rxjs';
 import { events } from 'src/app/interfaces/log';
 import { User, UserProfiles } from 'src/app/interfaces/user';
+import { environment } from 'src/environments/environment';
 import { LogService } from '../log/log.service';
 import { UserService } from '../user/user.service';
 import { Validator, whiteList } from './Validators';
@@ -56,11 +57,11 @@ export class AuthService implements OnDestroy {
         throw error;
       });
 
-  signUp = async (user: User, password: string, files: Array<File>) =>
+  signUp = async (user: User, password: string) =>
     await this.angularFireAuth
       .createUserWithEmailAndPassword(Validator.email(user.mail), password)
       .then(async (res) => {
-        return await this.handleSignUp(res, user, files).then(() => res);
+        return await this.handleSignUp().then(() => res);
       })
       .catch((error) => {
         if (error.code === 'auth/operation-not-allowed')
@@ -70,6 +71,40 @@ export class AuthService implements OnDestroy {
         throw error;
       });
 
+  signUpOnOtherThread = async (user: User, password: string) => {
+    let secondaryApp = firebase.initializeApp(
+      environment.firebase,
+      'secondary'
+    );
+    return await secondaryApp
+      .auth()
+      .createUserWithEmailAndPassword(user.mail, password)
+      .then(async (res) => {
+        secondaryApp.auth().currentUser?.updateProfile({
+          displayName: user.apellido + ', ' + user.nombre,
+          photoURL: user.img_urls[0] ?? '',
+        });
+        return await secondaryApp
+          .auth()
+          .currentUser?.sendEmailVerification()
+          .then(() => {
+            secondaryApp
+              .auth()
+              .signOut()
+              .then(() => {
+                secondaryApp.delete();
+              });
+            return res;
+          });
+      })
+      .catch((error) => {
+        if (error.code === 'auth/operation-not-allowed')
+          throw new Error(
+            'Lo siento, hubo un error interno. Vuelva a intentarlo en otro momento.'
+          );
+        throw error;
+      });
+  };
 
   passRecovery = async (email: string) => {
     this.angularFireAuth
@@ -85,6 +120,20 @@ export class AuthService implements OnDestroy {
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
+  }
+
+  manageUserData = async (user: User, res: any /*, files: File[]*/) => {
+    await Promise.all([
+      await this.userDb.newUser(res.user?.uid ?? '', user),
+      await this.log.saveEvent(res.user?.uid ?? '', events.newUser, user.tipo),
+    ]);
+  };
+
+  updateAuthUserProfile(user: User) {
+    firebase.auth().currentUser?.updateProfile({
+      displayName: user.apellido + ', ' + user.nombre,
+      photoURL: user.img_urls[0] ?? '',
+    });
   }
 
   private listenUser() {
@@ -113,6 +162,8 @@ export class AuthService implements OnDestroy {
       );
     }
     await this.userDb.getUser(res.user?.uid ?? '').then((user: any) => {
+      //check user not deleted
+      if (user.eliminado != false) throw new Error('El usuario no existe.');
       //check admin/specialist validation
       if (user.tipo === UserProfiles.specialist && !user.verificado)
         throw new Error('Tu perfil no ha sido aprobado aún.');
@@ -128,7 +179,7 @@ export class AuthService implements OnDestroy {
    * Retorna errores con mensaje para mostrar.
    * @param res
    */
-  private handleSignUp = async (res: any, user: User, files: Array<File>) => {
+  private handleSignUp = async () => {
     //envia mail de verificacion
     await this.sendVerificationEmail().then(
       async (sended: boolean | undefined) => {
@@ -146,23 +197,4 @@ export class AuthService implements OnDestroy {
       .currentUser?.sendEmailVerification()
       .then(() => true)
       .catch(() => false);
-
-  manageUserData = async (user: User, res: any /*, files: File[]*/) => {
-    //guarda imagenes, datos y logs
-    // await this.handleFiles(user, res.user?.uid ?? '', files).then(() => {
-    await Promise.all([
-      await this.userDb.newUser(res.user?.uid ?? '', user),
-      await this.log.saveEvent(res.user?.uid ?? '', events.newUser, user.tipo),
-    ]);
-    //actualiza el perfil de auth
-    this.updateAuthUserProfile(user);
-    // });
-  };
-
-  private updateAuthUserProfile(user: User) {
-    firebase.auth().currentUser?.updateProfile({
-      displayName: user.apellido + ', ' + user.nombre,
-      photoURL: user.img_urls[0] ?? '',
-    });
-  }
 }

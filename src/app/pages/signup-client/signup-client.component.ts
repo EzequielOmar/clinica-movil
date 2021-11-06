@@ -68,12 +68,13 @@ export class SignupClientComponent implements OnInit {
       let user = { ...this.form.value, ...this.persona.value };
       setUserType(user);
       this.auth
-        .signUp(user, this.pass.controls['password'].value, this.files)
+        .signUp(user, this.pass.controls['password'].value)
         .then((res) => {
           this.file
             .handleFiles(user, res.user?.uid ?? '', this.files)
             .then(() => {
               this.auth.manageUserData(user, res).then(() => {
+                this.auth.updateAuthUserProfile(user);
                 this.auth.signOut(res.user?.uid ?? '', user.tipo);
               });
             });

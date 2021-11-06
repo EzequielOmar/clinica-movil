@@ -1,46 +1,162 @@
-<div class="row" *ngIf="user">
-  <div class="card my-3 col-8">
+<div class="row">
+  <!--Detalle Usuario-->
+  <div *ngIf="user && !user.data.eliminado" class="card my-3 col-8">
     <div class="row no-gutters d-flex align-items-center">
       <div class="col-md-4">
         <img class="rounded col px-3" style="max-width: 10rem;" src="{{user.data.img_urls[0]}}" alt="user-image">
       </div>
       <div class="col-md-8">
         <div class="card-body">
+          <!--Nombre-->
           <h5 class="card-title text-capitalize">{{user.data.apellido}}, {{user.data.nombre}}</h5>
+          <!--Edad-->
           <div class="row mt-2">
             <label>Edad: <strong>{{getEdad(user.data.f_nac)}} Años</strong> </label>
           </div>
+          <!--Correo-->
           <div class="row mt-2 ">
             <label>Correo: <strong>{{user.data.mail}}</strong></label>
           </div>
-          <div *ngIf="user.data.especialidad" class="row mt-2">
+          <!--Especialidad (especialista)-->
+          <div *ngIf="tipe===2" class="row mt-2">
             <label>Especialidad/es:</label>
             <li style="list-style: none;" *ngFor="let esp of user.data.especialidad">
               <strong>{{esp}}</strong>
             </li>
           </div>
-          <div class="row mt-2 ">
+          <!--Perfil (especialista)-->
+          <div *ngIf="tipe===2" class="row mt-2 ">
             <label>Perfil: <strong *ngIf="user.data.verificado">Verificado</strong> <strong
                 *ngIf="user.data.eliminado">Eliminado</strong> <strong
                 *ngIf="!user.data.verificado && !user.data.eliminado">Inhabilitado</strong></label>
+          </div>
+          <!--Obra Social (paciente)-->
+          <div *ngIf="tipe===3" class="row mt-2 ">
+            <label>Prestador: <strong>{{user.data.obra_social}}</strong></label>
+          </div>
+          <!--Creado (paciente|admin)-->
+          <div *ngIf="tipe===3||tipe===1" class="row mt-2 ">
+            <label>Miembro desde: <strong>{{user.data.creado.split(' ')[0] }}</strong></label>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="my-3 col-3 mx-3 h-auto">
-    <div *ngIf="!user.data.verificado" class="card bg-light d-block user-button p-2 m-2">
+  <!--Botonera (especialista)-->
+  <div *ngIf="tipe===2 && user && !user.data.eliminado" class="my-3 col-3 mx-3 h-auto">
+    <div (click)="validateSpecialist(user)" *ngIf="!user.data.verificado"
+      class="card bg-light d-block user-button p-2 m-2">
       <i-feather class="text-success" name="check-circle"></i-feather>
       Verificar perfil
     </div>
-    <div *ngIf="user.data.verificado" class="card bg-light d-block user-button p-2 m-2">
+    <div (click)="validateSpecialist(user)" *ngIf="user.data.verificado"
+      class="card bg-light d-block user-button p-2 m-2">
       <i-feather class="text-warning" name="lock"></i-feather>
       Inhabilitar perfil
     </div>
-    <div *ngIf="!user.data.verificado" class="card bg-light d-block user-button p-2 m-2">
+    <div (click)="deleteUser(user)" *ngIf="!user.data.verificado" class="card bg-light d-block user-button p-2 m-2">
       <i-feather class="text-danger" name="crosshair"></i-feather>
       Eliminar perfil
     </div>
   </div>
+  <!--Botonera (admin)-->
+  <div *ngIf="tipe===1" class="my-3 col-3 mx-3 h-auto justify-self-rigth">
+    <div (click)="openNewAdmin(newAdmin)" class="card bg-light d-block user-button p-2 m-2">
+      <i-feather class="text-success" name="plus-circle"></i-feather>
+      Nuevo Administrador
+    </div>
+    <div (click)="deleteUser(user)" *ngIf="user && !user.data.eliminado" class="card bg-light d-block user-button p-2 m-2">
+      <i-feather class="text-danger" name="crosshair"></i-feather>
+      Eliminar Administrador
+    </div>
+  </div>
 </div>
+<ng-component *ngIf="success; then successSpan"></ng-component>
+
+<!--Formulario Alta Admin-->
+<ng-template #newAdmin let-modal>
+  <div class="modal-header">
+    <form class="needs-validation  text-center" [formGroup]="form" (ngSubmit)="send()">
+      <div class="row m-3">
+        <legend>Agregar Perfil de Administrador</legend>
+        <span class="text-danger">Asegurate de resguardar los datos de este perfil, y brindarlos solo a personal
+          autorizado.</span>
+      </div>
+      <!--Error Messagge-->
+      <div *ngIf="error then errorSpan"></div>
+      <!--Form Persona-->
+      <app-form-persona [pass]="pass" [person]="person" [sended]="sended"></app-form-persona>
+      <div class="row">
+        <!--Imágen-->
+        <label style="width: 100%;" for="portada">Imágenes de perfil</label>
+        <label style="width: 100%;" class="image-upload-container">
+          <input (input)="getImage($event)" #imageInput class="file-input form-control" type="file"
+            accept=".jpeg,.jpg,.png,.svg" multiple="multiple">
+        </label>
+        <!--Errores-->
+        <div *ngIf="!files.length && sended then reqError">
+        </div>
+      </div>
+      <!--send-->
+      <div class="row">
+        <div class="col-6">
+          <button (click)="modal.dismiss()" class="btn btn-secondary px-5 link py-2 my-3 ">Cancelar</button>
+        </div>
+        <div class="col-6" *ngIf="!spinner else loading">
+          <button type="submit" class="btn btn-primary px-5 link py-2 my-3">Enviar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
+<!--Templates-->
+<ng-template #reqError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *Este campo es obligatorio*
+  </div>
+</ng-template>
+<!--ERROR -> Patron incorrecto-->
+<ng-template #patError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El formato del campo es incorrecto*
+  </div>
+</ng-template>
+<!--ERROR -> minimo-->
+<ng-template #minError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy corto/bajo*
+  </div>
+</ng-template>
+<!--ERROR -> maximo-->
+<ng-template #maxError>
+  <div class="invalid-feedback d-block" style="width: 100%;">
+    *El valor de este campo es muy largo/alto*
+  </div>
+</ng-template>
+<!--Loading-->
+<ng-template #loading>
+  <div class="col-6">
+    <button class="btn btn-primary px-4 link py-2 my-3" type="button" disabled>
+      <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
+      <span class="sr-only">Procesando...</span>
+    </button>
+  </div>
+</ng-template>
+<!--Error-->
+<ng-template #errorSpan>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Algo ha salido mal.</strong>
+    {{error}}
+    <button (click)="error=false" class="m-0" type="button" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
+<!--Success-->
+<ng-template #successSpan>
+  <div class="alert alert-success offset-8 col-4 mt-3 p-2 text-center" role="alert">
+    <span>Admin agregado</span>
+  </div>
+</ng-template>

@@ -8,6 +8,9 @@ import { UserPanelComponent } from 'src/app/pages/admin/user-panel/user-panel.co
 import { IconsModule } from '../feather-icons/feather.module';
 import { ListaUsuariosComponent } from 'src/app/components/lista-usuarios/lista-usuarios.component';
 import { DetalleUsuarioComponent } from 'src/app/components/detalle-usuario/detalle-usuario.component';
+import { AdminPanelComponent } from 'src/app/pages/admin/admin-panel/admin-panel.component';
+import { SharedComponentsModule } from '../shared-components/shared-components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 //modules
 
 @NgModule({
@@ -17,7 +20,14 @@ import { DetalleUsuarioComponent } from 'src/app/components/detalle-usuario/deta
     UserPanelComponent,
     ListaUsuariosComponent,
     DetalleUsuarioComponent,
+    AdminPanelComponent,
   ],
-  imports: [CommonModule, AdminRoutingModule, IconsModule],
+  imports: [
+    CommonModule,
+    AdminRoutingModule,
+    IconsModule,
+    SharedComponentsModule,
+    ReactiveFormsModule
+  ],
 })
 export class AdminModule {}

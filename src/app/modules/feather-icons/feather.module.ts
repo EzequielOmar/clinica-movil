@@ -10,7 +10,8 @@ import {
   CheckCircle,
   Lock,
   Unlock,
-  Crosshair
+  Crosshair,
+  PlusCircle,
 } from 'angular-feather/icons';
 
 // Select some icons (use an object, not an array)
@@ -23,7 +24,8 @@ const icons = {
   CheckCircle,
   Lock,
   Unlock,
-  Crosshair
+  Crosshair,
+  PlusCircle,
 };
 
 @NgModule({

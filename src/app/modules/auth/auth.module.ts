@@ -6,19 +6,18 @@ import { LoginComponent } from 'src/app/pages/login/login.component';
 import { SignupClientComponent } from 'src/app/pages/signup-client/signup-client.component';
 import { SignupSpecialistComponent } from 'src/app/pages/signup-specialist/signup-specialist.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormPersonaComponent } from 'src/app/components/form-persona/form-persona.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecoveryComponent } from 'src/app/pages/recovery/recovery.component';
 import { DbService } from 'src/app/services/db/db.service';
 import { MaterialModule } from '../material/material.module';
 import { IconsModule } from '../feather-icons/feather.module';
+import { SharedComponentsModule } from '../shared-components/shared-components.module';
 
 @NgModule({
   declarations: [
     LoginComponent,
     SignupClientComponent,
     SignupSpecialistComponent,
-    FormPersonaComponent,
     RecoveryComponent,
   ],
   imports: [
@@ -29,6 +28,7 @@ import { IconsModule } from '../feather-icons/feather.module';
     NgbModule,
     MaterialModule,
     IconsModule,
+    SharedComponentsModule
   ],
   providers: [DbService],
 })

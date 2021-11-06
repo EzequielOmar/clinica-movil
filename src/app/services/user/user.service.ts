@@ -10,7 +10,7 @@ export class UserService {
   constructor(private db: DbService) {}
 
   newUser = async (uid: string, user: User) => {
-    user.creado = new Date().toLocaleString();
+
     await this.db.setWithId(dbNames.users, uid, user);
   };
 
@@ -21,6 +21,9 @@ export class UserService {
       .catch((err) => err);
 
   getUsersByType(type: number) {
-    return this.db.getObserverDb(dbNames.users).where('tipo', '==', type);
+    return this.db
+      .getObserverDb(dbNames.users)
+      .where('tipo', '==', type)
+      .where ('eliminado', '==',false);
   }
 }

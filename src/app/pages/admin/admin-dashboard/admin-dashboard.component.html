@@ -1,5 +1,5 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Company name</a>
+  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3">Clinica Virtual System</a>
   <button (click)="dropMenu=!dropMenu" class="navbar-toggler position-absolute d-md-none collapsed" type="button"
     data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
     aria-label="Toggle navigation">
@@ -11,14 +11,14 @@
   -->
   <ul [class.show]="dropMenu" class="navbar-nav px-3 d-md-block">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
+      <a class="nav-link" (click)="signOut()">Salir</a>
     </li>
   </ul>
 </nav>
 
 <div class="container-fluid">
   <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="sidebar-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
@@ -45,6 +45,10 @@
         </ul>
       </div>
     </nav>
+    <div class="row fixed-bottom p-2 pb-3">
+      <span class="text-muted userData mb-1 text-capitalize">{{user.displayName}} </span>
+      <span class="text-muted userData ">{{user.uid}} </span>
+    </div>
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main">
       <div class="d-flex justify-content-center flex-wrap align-items-center pt-3 pb-2 mb-3">
