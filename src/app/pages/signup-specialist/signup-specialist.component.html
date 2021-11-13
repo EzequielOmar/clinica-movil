@@ -9,26 +9,11 @@
       <!--Error Messagge-->
       <div *ngIf="error then errorSpan"></div>
       <!--Form Persona-->
-      <app-form-persona [pass]="pass" [person]="person" [sended]="sended"></app-form-persona>
+      <app-form-person [pass]="pass" [person]="person" [sended]="sended"></app-form-person>
       <div class="row">
         <!--Especialidad-->
         <div class="col-md-6">
-          <label for="especialidad">Especialidad</label>
-          <mat-form-field class="mat-selector">
-            <mat-label>Elejir al menos una</mat-label>
-            <mat-select formControlName="especialidad" multiple required>
-              <mat-option *ngFor="let specialtie of specialties" [value]="specialtie">{{specialtie}}</mat-option>
-              <div class="input-group">
-                <input #newSpecialtie class="form-control m-0" type="text" placeholder="Agregar Especialidad">
-                <div class="input-group-append">
-                  <button (click)="addSpecialtie(newSpecialtie.value)" class="btn btn-outline-secondary m-0"
-                    type="button">
-                    <i-feather name="plus" style="color: green;"></i-feather>
-                  </button>
-                </div>
-              </div>
-            </mat-select>
-          </mat-form-field>
+          <app-specialties-input [formWithSpecialtieInput]="form"></app-specialties-input>
         </div>
         <!--Imágen-->
         <div class="col-md-6">

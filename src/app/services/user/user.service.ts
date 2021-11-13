@@ -9,8 +9,7 @@ import { DbService } from '../db/db.service';
 export class UserService {
   constructor(private db: DbService) {}
 
-  newUser = async (uid: string, user: User) => {
-
+  writeUser = async (uid: string, user: User) => {
     await this.db.setWithId(dbNames.users, uid, user);
   };
 

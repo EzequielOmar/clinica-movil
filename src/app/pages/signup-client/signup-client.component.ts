@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Prestadores } from 'src/app/interfaces/prestadores';
+import { Providers } from 'src/app/interfaces/providers';
 import { setUserType } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FileService } from 'src/app/services/file/file.service';
@@ -18,7 +18,7 @@ export class SignupClientComponent implements OnInit {
   pass: FormGroup;
   files: Array<File> = [];
   //status
-  prestadores: Array<string> = Prestadores;
+  providers: Array<string> = Providers;
   sended: boolean = false;
   spinner: boolean = false;
   error: string = '';

@@ -10,6 +10,16 @@ interface Persona {
   modificado: string;
   eliminado: string;
 }
+
+export const E_Dias = {
+  lunes: 1,
+  martes: 2,
+  miercoles: 3,
+  jueves: 4,
+  viernes: 5,
+  sabado: 6,
+};
+
 export interface Paciente extends Persona {
   obra_social: string;
 }
@@ -17,6 +27,7 @@ export interface Paciente extends Persona {
 export interface Especialista extends Persona {
   especialidad: Array<string>;
   verificado: boolean;
+  horarios: Array<{ dia: number; de: string; a: string }>;
 }
 
 export interface Admin extends Persona {}
@@ -64,7 +75,8 @@ export const UserProfiles = {
   pacient: 3,
 };
 
-export type User = Admin | Especialista | Paciente; null
+export type User = Admin | Especialista | Paciente;
+null;
 
 export type UserId = { id: string; data: User };
 

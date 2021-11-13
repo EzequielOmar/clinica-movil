@@ -23,6 +23,17 @@ const routes: Routes = [
     },
   },
   {
+    path: 'specialist',
+    loadChildren: () =>
+      import('./modules/specialist/specialist.module').then(
+        (m) => m.SpecialistModule
+      ),
+    canActivate: [UserTypeGuardService],
+    data: {
+      expectedType: UserProfiles.specialist,
+    },
+  },
+  {
     path: 'auth',
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),

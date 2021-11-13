@@ -1,4 +1,4 @@
-<div [formGroup]="person">
+<div *ngIf="person" [formGroup]="person">
   <div class="row">
     <!--Nombre-->
     <div class="col-md-6">
@@ -52,7 +52,7 @@
       </div>
     </div>
   </div>
-  <div [formGroup]="pass" class="row">
+  <div *ngIf="pass" [formGroup]="pass" class="row">
     <!--Password-->
     <div class="col-sm-6">
       <label for="password">Contraseña</label>

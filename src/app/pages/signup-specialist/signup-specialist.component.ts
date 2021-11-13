@@ -1,10 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { dbNames } from 'src/app/interfaces/dbNames';
 import { setUserType, User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { DbService } from 'src/app/services/db/db.service';
 import { FileService } from 'src/app/services/file/file.service';
 
 @Component({
@@ -28,7 +26,6 @@ export class SignupSpecialistComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private db: DbService,
     private auth: AuthService,
     private file: FileService
   ) {
@@ -47,7 +44,6 @@ export class SignupSpecialistComponent {
       especialidad: [[], Validators.required],
       img_urls: [[]],
     });
-    this.getSpecialities();
   }
 
   cancel() {
@@ -56,10 +52,6 @@ export class SignupSpecialistComponent {
 
   getImage(event: any) {
     this.files = event.target.files;
-  }
-
-  addSpecialtie(specialtie: string) {
-    if (specialtie) this.newSpecialtie(specialtie);
   }
 
   goHome() {
@@ -94,15 +86,6 @@ export class SignupSpecialistComponent {
     }
   }
 
-  private getSpecialities() {
-    this.db.getObserverDb(dbNames.specialties).onSnapshot((snap: any) => {
-      this.specialties = [];
-      snap.forEach((doc: any) => {
-        this.specialties.push(doc.id);
-      });
-    });
-  }
-
   private validateForms() {
     return (
       this.form.valid &&
@@ -110,15 +93,5 @@ export class SignupSpecialistComponent {
       this.pass.controls['password'].value ===
         this.pass.controls['passCheck'].value
     );
-  }
-
-  private newSpecialtie(specialtie: string) {
-    specialtie =
-      specialtie.charAt(0).toLocaleUpperCase() +
-      specialtie.slice(1).toLowerCase();
-    let rx =
-      /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;
-    if (!this.specialties.includes(specialtie) && rx.test(specialtie))
-      this.db.setWithId(dbNames.specialties, specialtie);
   }
 }

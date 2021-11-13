@@ -1,0 +1,20 @@
+.profile-image {
+  max-width: 200px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+label {
+  font-weight: bolder;
+}
+
+.select-image {
+  vertical-align: text-top !important;
+  max-width: 2rem;
+  align-self: baseline;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}

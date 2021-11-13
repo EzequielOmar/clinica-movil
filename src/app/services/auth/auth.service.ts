@@ -124,7 +124,7 @@ export class AuthService implements OnDestroy {
 
   manageUserData = async (user: User, res: any /*, files: File[]*/) => {
     await Promise.all([
-      await this.userDb.newUser(res.user?.uid ?? '', user),
+      await this.userDb.writeUser(res.user?.uid ?? '', user),
       await this.log.saveEvent(res.user?.uid ?? '', events.newUser, user.tipo),
     ]);
   };

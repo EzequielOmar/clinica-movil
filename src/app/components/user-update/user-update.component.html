@@ -1,0 +1,111 @@
+<div class="offset-md-2 col-md-8">
+  <div *ngIf="user" class="card m-5 p-5 text-center ">
+    <div class="row justify-content-center">
+      <!--Imagen de perfil-->
+      <div class="col-8 d-flex justify-content-center">
+        <img src="{{user.data.img_urls[0]}}" class=" profile-image" alt="profile-image">
+        <i-feather placement="right" ngbTooltip="Cambiar imagen de perfil" [class.hide]="!modif" name="image"
+          class="select-image"></i-feather>
+      </div>
+      <!--Botones-->
+      <div *ngIf="!modif; else modifButton" class="col-4 py-2">
+        <button (click)="modifProfile()" class="my-2 col-12 btn btn-ligth">
+          <i-feather class="mx-2" name="user-plus"></i-feather>Modificar
+        </button>
+        <button class="my-2 col-12 btn btn-danger">
+          <i-feather class="mx-2" name="trash-2"></i-feather> Eliminar
+        </button>
+      </div>
+      <ng-template #modifButton>
+        <div class="col-4 py-2">
+          <button (click)="saveChanges()" class="my-2 col-12 btn btn-primary">
+            <i-feather class="mx-2" name="user-plus"></i-feather>Guardar
+          </button>
+          <button (click)="modif=false" class="my-2 col-12 btn btn-secondary">
+            <i-feather class="mx-2" name="trash-2"></i-feather> Descartar
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <!--Detalles-->
+    <div *ngIf="!modif; else modifForm" class="card-body">
+      <!--Datos persona-->
+      <h5 class="text-capitalize">{{user.data.apellido}}, {{user.data.nombre}}</h5>
+      <p>{{user.data.mail}}</p>
+      <div class="row ">
+        <div class="row col-md-4 justify-content-center">
+          <strong class="align-self-end">Nacido el: </strong>
+          <p>{{user.data.f_nac}}</p>
+        </div>
+        <div class="row col md-5 justify-content-center">
+          <strong class="align-self-end">DNI: </strong>
+          <p>{{user.data.dni}}</p>
+        </div>
+        <div class="row col md-5 justify-content-center">
+          <strong class="align-self-end"> Miembro desde: </strong>
+          <p>{{user.data.creado.split(' ')[0] }}</p>
+        </div>
+      </div>
+      <!--Especialista-->
+      <div *ngIf="user.data.tipo===2">
+        <!--Perfil-->
+        <div class="row mt-1 justify-content-center">
+          <strong class="w-auto">Perfil:</strong>
+          <p class="w-auto" *ngIf="user.data.verificado">Verificado</p>
+          <p class="w-auto" *ngIf="user.data.eliminado">Eliminado</p>
+          <p class="w-auto" *ngIf="!user.data.verificado && !user.data.eliminado">Inhabilitado</p>
+        </div>
+        <!--Especialidad-->
+        <div class="row mt-1">
+          <label>Especialidad/es:</label>
+          <p>{{user.data.especialidad}}</p>
+        </div>
+        <!--Horarios-->
+        <label class="mr-sm-2 sr-only" for="horarios">Horarios</label>
+        <div class="row">
+          <p class="text-danger">**No has configurado tu horario de atención**</p>
+        </div>
+      </div>
+      <!--Obra Social (paciente)-->
+      <div *ngIf="user.data.tipo===3" class="row mt-1 ">
+        <label>Prestador: <strong>{{user.data.obra_social}}</strong></label>
+      </div>
+    </div>
+
+    <!--Formulario de modificación-->
+    <ng-template #modifForm>
+      <div *ngIf="modif">
+        <!--Persona (todos)-->
+        <app-form-person [sended]="sended" [person]="person"></app-form-person>
+        <!--Especialidad-->
+        <div [formGroup]="userForm" *ngIf="userForm.controls['especialidad']">
+          <app-specialties-input [formWithSpecialtieInput]="userForm"></app-specialties-input>
+          <!--Horarios-->
+          <app-day-hour-input [formWithHoursInput]="userForm"></app-day-hour-input>
+        </div>
+      </div>
+    </ng-template>
+
+  </div>
+</div>
+<!--
+
+  nombre: string;
+  apellido: string;
+  f_nac: string; //date.tolocaldatestring - dd/mm/yyyy
+  dni: string;
+  mail: string;
+  img_urls: Array<string>;
+  tipo: number;
+  creado: string;
+  modificado: string;
+  eliminado: string;
+
+  obra_social: string;
+
+  especialidad: Array<string>;
+  verificado: boolean;
+  horarios: Array<{ dia: number; de: string; a: string }>;
+
+-->

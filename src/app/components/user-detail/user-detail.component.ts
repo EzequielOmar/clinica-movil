@@ -7,9 +7,9 @@ import { FileService } from 'src/app/services/file/file.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
-  selector: 'app-detalle-usuario',
-  templateUrl: './detalle-usuario.component.html',
-  styleUrls: ['./detalle-usuario.component.scss'],
+  selector: 'app-user-detail',
+  templateUrl: './user-detail.component.html',
+  styleUrls: ['./user-detail.component.scss'],
 })
 export class DetalleUsuarioComponent implements OnInit {
   @Input() user?: any;
@@ -64,7 +64,7 @@ export class DetalleUsuarioComponent implements OnInit {
 
   validateSpecialist(user: any) {
     user.data.verificado = !user.data.verificado;
-    this.userDb.newUser(user.id, user.data);
+    this.userDb.writeUser(user.id, user.data);
   }
 
   //admin
@@ -103,7 +103,7 @@ export class DetalleUsuarioComponent implements OnInit {
 
   deleteUser(user: any) {
     user.data.eliminado = new Date().toLocaleString();
-    this.userDb.newUser(user.id, user.data);
+    this.userDb.writeUser(user.id, user.data);
   }
 
   private validateForms() {

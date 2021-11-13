@@ -1,5 +1,5 @@
 <h4 class="d-flex justify-content-between align-items-center mb-3">
   <span class="text-muted">Afiliados</span>
 </h4>
-<app-lista-usuarios [users]="pacients" [tipe]='3' (userSelected)="selectUser($event)"></app-lista-usuarios>
-<app-detalle-usuario [user]="selected" [tipe]='3'></app-detalle-usuario>
+<app-users-list [users]="pacients" [tipe]='3' (userSelected)="selectUser($event)"></app-users-list>
+<app-user-detail [user]="selected" [tipe]='3'></app-user-detail>

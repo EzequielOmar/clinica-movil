@@ -9,8 +9,8 @@ import { CustomDateAdapter } from 'src/app/services/CustomDateAdapter/custom-dat
 import { CustomDateParserFormatter } from 'src/app/services/CustomDateParserFormatter/custom-date-parser-formatter.service';
 
 @Component({
-  selector: 'app-form-persona',
-  templateUrl: './form-persona.component.html',
+  selector: 'app-form-person',
+  templateUrl: './form-person.component.html',
   styleUrls: ['.././../pages/signup-client/signup-client.component.scss'],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomDateAdapter },
@@ -18,8 +18,8 @@ import { CustomDateParserFormatter } from 'src/app/services/CustomDateParserForm
   ],
 })
 export class FormPersonaComponent implements OnInit {
-  @Input() person!: FormGroup;
-  @Input() pass!: FormGroup;
+  @Input() person?: FormGroup;
+  @Input() pass?: FormGroup;
   @Input() sended!: boolean;
   maxAge: number = 99;
   minAge: number = 18;

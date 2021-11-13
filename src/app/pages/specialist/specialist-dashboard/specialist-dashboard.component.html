@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand px-3" style="font-size: medium;">Clínica Virtual Professional</a>
+  <button (click)="dropMenu=!dropMenu" class="navbar-toggler p-1 mx-1" type="button" data-toggle="collapse"
+    data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div [class.show]="dropMenu" class="collapse navbar-collapse justify-content-end">
+    <div class="navbar-nav">
+      <a [class.active]="active === 0" (click)="setActive(0)" [routerLink]="[{ outlets: { specialistMenu:['']}}]"
+        class="nav-link px-3">Mis Turnos</a>
+      <a [class.active]="active === 1" (click)="setActive(1)" [routerLink]="[{ outlets: { specialistMenu:['perfil']}}]"
+        class="nav-link px-3 active">Mi Perfil</a>
+      <a [class.active]="active === 2" (click)="setActive(2)" class="nav-link px-3" (click)="signOut()">Salir</a>
+    </div>
+  </div>
+</nav>
+<router-outlet name='specialistMenu'></router-outlet>

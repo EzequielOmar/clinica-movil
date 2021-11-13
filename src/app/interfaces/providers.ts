@@ -1,4 +1,4 @@
-export const Prestadores = [
+export const Providers = [
   'Swist Medical',
   'Medical Care',
   'Galeno',

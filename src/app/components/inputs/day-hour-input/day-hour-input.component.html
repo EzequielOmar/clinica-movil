@@ -1,0 +1,47 @@
+<label class="mr-sm-2 sr-only" for="horarios">Horarios</label>
+<ul [formGroup]="formWithHoursInput" class="m-0">
+  <li *ngFor="let hs of formWithHoursInput.controls['horarios'].value" style="list-style: none;">{{hs.dia}} de
+    {{hs.de}}
+    a
+    {{hs.a}}</li>
+</ul>
+<div [formGroup]="horario" class="row text-left align-items-end py-2">
+  <div class="col-4">
+    <select formControlName="dia" class="form-control custom-select mr-sm-2">
+      <option value="1">Lunes</option>
+      <option value="2">Martes</option>
+      <option value="3">Miércoles</option>
+      <option value="4">Jueves</option>
+      <option value="5">Viernes</option>
+      <option value="6">Sábado</option>
+    </select>
+  </div>
+  <div class="col-3 mx-1">
+    <span>De</span>
+    <div class="row">
+      <input formControlName="de" pattern="^(?:1[0-9]|2[0-1]|0?[6-9]):[0|3]0?$" type="text"
+        class="form-control bg-white p-0 m-0 w-75">
+      <span class="p-0 m-0 w-25">
+        Hs
+      </span>
+    </div>
+  </div>
+  <div class="col-3 mx-1">
+    <span>A</span>
+    <div class="row">
+      <input formControlName="a" pattern="^(?:1[0-9]|2[0-1]|0?[6-9]):[0|3]0?$" type="text"
+        class="form-control bg-white p-0 m-0 w-75" >
+      <span class="p-0 m-0 w-25">
+        Hs
+      </span>
+    </div>
+  </div>
+  <div class="col-1 pb-2">
+    <i-feather (click)="addHours()" style="max-width: 30px;cursor: pointer;" class=" text-primary" name="plus-circle">
+    </i-feather>
+  </div>
+  <!--Error-->
+  <div *ngIf="horario.controls['dia'].errors || horario.controls['de'].errors || horario.controls['a'].errors">
+    <span class="text-danger">**Formato inválido**</span>
+  </div>
+</div>

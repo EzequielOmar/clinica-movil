@@ -28,6 +28,7 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
     NgbModule,
     MaterialModule,
     IconsModule,
+
     SharedComponentsModule
   ],
   providers: [DbService],

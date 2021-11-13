@@ -1,6 +1,7 @@
 <h4 class="d-flex justify-content-between align-items-center mb-3">
   <span class="text-muted">Personal Autorizado</span>
 </h4>
-<span class="text-danger">Estos usuarios tienen permiso de administrador, pueden crear, eliminar, dar y revocar permisos.</span>
-<app-lista-usuarios [tipe]='1' [users]="admins" (userSelected)="selectUser($event)"></app-lista-usuarios>
-<app-detalle-usuario [tipe]='1' [user]="selected"></app-detalle-usuario>
+<span class="text-danger">Estos usuarios tienen permiso de administrador, pueden crear, eliminar, dar y revocar
+  permisos.</span>
+<app-users-list [tipe]='1' [users]="admins" (userSelected)="selectUser($event)"></app-users-list>
+<app-user-detail [tipe]='1' [user]="selected"></app-user-detail>

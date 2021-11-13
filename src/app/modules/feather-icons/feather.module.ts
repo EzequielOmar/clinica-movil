@@ -7,16 +7,20 @@ import {
   Calendar,
   Plus,
   UserCheck,
+  UserPlus,
   CheckCircle,
   Lock,
   Unlock,
   Crosshair,
   PlusCircle,
+  Image,
+  Trash2,
 } from 'angular-feather/icons';
 
 // Select some icons (use an object, not an array)
 const icons = {
   Star,
+  Trash2,
   Users,
   Calendar,
   Plus,
@@ -25,7 +29,9 @@ const icons = {
   Lock,
   Unlock,
   Crosshair,
+  UserPlus,
   PlusCircle,
+  Image,
 };
 
 @NgModule({

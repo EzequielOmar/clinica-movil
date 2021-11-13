@@ -8,14 +8,14 @@
       </div>
       <!--Error Messagge-->
       <div *ngIf="error then errorSpan"></div>
-      <app-form-persona [pass]="pass" [person]="persona" [sended]="sended"></app-form-persona>
+      <app-form-person [pass]="pass" [person]="persona" [sended]="sended"></app-form-person>
       <div class="row">
         <!--Obra Social-->
         <div class="col-md-6">
           <label for="obra_social">Obra Social</label>
           <select formControlName="obra_social" class="form-control">
             <option selected disabled>-- Prestadores --</option>
-            <option [value]="item" *ngFor="let item of prestadores">{{item}}</option>
+            <option [value]="item" *ngFor="let item of providers">{{item}}</option>
           </select>
           <div
             *ngIf="form.controls['obra_social'].errors?.required && (sended||form.controls['obra_social'].touched)  then reqError">
