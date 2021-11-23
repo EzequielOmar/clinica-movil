@@ -18,3 +18,23 @@ label {
 .hide {
   display: none;
 }
+
+.new-image {
+  i-feather {
+    min-width: 55px;
+    top: -0.4rem;
+    position: relative;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: #eaeaea;
+  }
+  min-height: 110px !important;
+}
+
+.remove-image {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.344);
+}

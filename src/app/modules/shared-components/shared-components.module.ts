@@ -8,6 +8,10 @@ import { UserUpdateComponent } from 'src/app/components/user-update/user-update.
 import { MaterialModule } from '../material/material.module';
 import { SpecialtiesInputComponent } from 'src/app/components/inputs/specialties-input/specialties-input.component';
 import { DayHourInputComponent } from 'src/app/components/inputs/day-hour-input/day-hour-input.component';
+import { DayPipe } from 'src/app/pipes/day/day.pipe';
+import { AppointmentDetailComponent } from 'src/app/components/appointment-detail/appointment-detail.component';
+import { SpecialtiesListComponent } from '../../components/specialties-list/specialties-list.component';
+import { SimpleUsersListComponent } from '../../components/simple-users-list/simple-users-list.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +19,10 @@ import { DayHourInputComponent } from 'src/app/components/inputs/day-hour-input/
     UserUpdateComponent,
     SpecialtiesInputComponent,
     DayHourInputComponent,
+    DayPipe,
+    AppointmentDetailComponent,
+    SpecialtiesListComponent,
+    SimpleUsersListComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +38,10 @@ import { DayHourInputComponent } from 'src/app/components/inputs/day-hour-input/
     UserUpdateComponent,
     SpecialtiesInputComponent,
     DayHourInputComponent,
+    DayPipe,
+    AppointmentDetailComponent,
+    SpecialtiesListComponent,
+    SimpleUsersListComponent,
   ],
 })
 export class SharedComponentsModule {}

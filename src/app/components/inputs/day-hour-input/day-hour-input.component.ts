@@ -42,4 +42,8 @@ export class DayHourInputComponent implements OnInit {
       ]);
     }
   }
+
+  removeHour(index: number) {
+    this.formWithHoursInput.controls['horarios'].value.splice(index, 1);
+  }
 }

@@ -1,0 +1,9 @@
+<ul class="list-group scroll">
+  <li (click)="selectUser(u)" [class.active]="user?.id??'a'===u.id??''" class="list-group-item" role="button"
+    *ngFor="let u of users">
+    {{u.data.nombre}}</li>
+  <span *ngIf="users && !users.length" class="text-danger card">
+    **Momentáneamente no disponemos de especialistas calificados para esta especialidad**<br><br>
+    Disculpe las molestias
+  </span>
+</ul>

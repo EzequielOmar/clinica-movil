@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { dbNames } from 'src/app/interfaces/dbNames';
-import { User } from 'src/app/interfaces/user';
+import { User, UserId, UserProfiles } from 'src/app/interfaces/user';
 import { DbService } from '../db/db.service';
 
 @Injectable({
@@ -23,6 +23,21 @@ export class UserService {
     return this.db
       .getObserverDb(dbNames.users)
       .where('tipo', '==', type)
-      .where ('eliminado', '==',false);
+      .where('eliminado', '==', false);
   }
+
+  getSpecialistsBySpecialtie = async (spec: string) => {
+    let specialists: Array<UserId> = [];
+    await this.getUsersByType(UserProfiles.specialist)
+      .where('especialidad', 'array-contains', spec)
+      .get()
+      .then((snap: any) => {
+        snap.forEach((d: any) => {
+          if (d.exists) {
+            specialists.push({ id: d.id, data: d.data() });
+          }
+        });
+      });
+    return specialists;
+  };
 }

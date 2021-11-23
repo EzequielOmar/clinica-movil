@@ -32,7 +32,7 @@ export interface Especialista extends Persona {
 
 export interface Admin extends Persona {}
 
-function isPaciente(object: unknown): object is Paciente {
+function isPacient(object: unknown): object is Paciente {
   return (
     Object.prototype.hasOwnProperty.call(object, 'obra_social') &&
     Object.prototype.hasOwnProperty.call(object, 'nombre') &&
@@ -44,7 +44,7 @@ function isPaciente(object: unknown): object is Paciente {
   );
 }
 
-function isEspecialista(object: unknown): object is Especialista {
+function isSpecialist(object: unknown): object is Especialista {
   return (
     Object.prototype.hasOwnProperty.call(object, 'especialidad') &&
     Object.prototype.hasOwnProperty.call(object, 'nombre') &&
@@ -82,8 +82,8 @@ export type UserId = { id: string; data: User };
 
 export function setUserType(user: any): void {
   if (isAdmin(user)) user.tipo = UserProfiles.admin;
-  if (isEspecialista(user)) user.tipo = UserProfiles.specialist;
-  if (isPaciente(user)) user.tipo = UserProfiles.pacient;
+  if (isSpecialist(user)) user.tipo = UserProfiles.specialist;
+  if (isPacient(user)) user.tipo = UserProfiles.pacient;
   user.creado = new Date().toLocaleString();
   user.modificado = false;
   user.eliminado = false;

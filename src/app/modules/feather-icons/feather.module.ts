@@ -15,6 +15,11 @@ import {
   PlusCircle,
   Image,
   Trash2,
+  AlertTriangle,
+  XCircle,
+  X,
+  FilePlus,
+  FileText,
 } from 'angular-feather/icons';
 
 // Select some icons (use an object, not an array)
@@ -32,6 +37,11 @@ const icons = {
   UserPlus,
   PlusCircle,
   Image,
+  AlertTriangle,
+  XCircle,
+  X,
+  FilePlus,
+  FileText,
 };
 
 @NgModule({

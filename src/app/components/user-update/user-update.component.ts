@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { compareObjects } from 'src/app/const/functions';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User, UserProfiles } from 'src/app/interfaces/user';
+import { FileService } from 'src/app/services/file/file.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -12,17 +13,23 @@ import { UserService } from 'src/app/services/user/user.service';
 export class UserUpdateComponent implements OnInit {
   //user
   @Input() user?: any;
-  oldUser?: User;
   //form manage
   person!: FormGroup;
   userForm!: FormGroup;
   horario!: FormGroup;
+  file?: File;
+  //state
   modif: boolean = false;
   sended: boolean = false;
-  save: boolean = false;
+  spinner: boolean = false;
   specialties: Array<string> = [];
 
-  constructor(private fb: FormBuilder, private userDb: UserService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userDb: UserService,
+    private modalService: NgbModal,
+    private fs: FileService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -57,30 +64,61 @@ export class UserUpdateComponent implements OnInit {
           this.fb.control(this.user.data.obra_social, Validators.required)
         );
     }
-    this.oldUser = { ...this.userForm.value, ...this.person.value };
   }
 
   saveChanges() {
     this.sended = true;
     let user: User = { ...this.userForm.value, ...this.person.value };
-    if (
-      this.userForm.valid &&
-      this.person.valid &&
-      !compareObjects(user, this.oldUser)
-    ) {
+    if (this.userForm.valid && this.person.valid) {
+      this.spinner = true;
       user.modificado = new Date().toLocaleString();
       this.userDb.writeUser(this.user.id, user).finally(() => {
         this.user.data = user;
         this.sended = false;
         this.modif = false;
+        this.spinner = false;
       });
     }
   }
 
-  deleteUser() {
+  showImages(profileImg: any) {
     //abrir modal
+    this.modalService.open(profileImg, { ariaLabelledBy: 'modal-basic-title' });
+  }
 
+  removeImage(index: number) {
+    this.person.controls['img_urls'].value.splice(index, 1);
+  }
+
+  getImage(event: any) {
+    this.file = event.target.files[0];
+    if (this.file) {
+      this.spinner = true;
+      this.fs
+        .uploadAndGetLink(this.user.uid, this.file)
+        .then((url) => {
+          this.person.controls['img_urls'].setValue([
+            ...this.person.controls['img_urls'].value,
+            url,
+          ]);
+        })
+        .finally(() => {
+          this.spinner = false;
+        });
+    }
+  }
+
+  deleteUser(confirm: any) {
+    //abrir modal
+    this.modalService.open(confirm, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  confirmDelete() {
     this.user.data.eliminado = new Date().toLocaleString();
     this.userDb.writeUser(this.user.id, this.user.data);
+  }
+
+  closeModal() {
+    this.modalService.dismissAll();
   }
 }

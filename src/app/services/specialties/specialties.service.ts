@@ -14,6 +14,10 @@ export class SpecialtiesService {
     return this.db.getObserverDb(dbNames.specialties);
   }
 
+  getSpecialtiesOnce() {
+    return this.db.getDbOnce(dbNames.specialties);
+  }
+
   newSpecialtie(specialtie: string) {
     specialtie =
       specialtie.charAt(0).toLocaleUpperCase() +

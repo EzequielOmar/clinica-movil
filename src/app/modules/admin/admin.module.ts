@@ -11,6 +11,7 @@ import { DetalleUsuarioComponent } from 'src/app/components/user-detail/user-det
 import { AdminPanelComponent } from 'src/app/pages/admin/admin-panel/admin-panel.component';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewAppointmenComponent } from '../../pages/admin/new-appointment/new-appointmen.component';
 //modules
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ListaUsuariosComponent,
     DetalleUsuarioComponent,
     AdminPanelComponent,
+    NewAppointmenComponent,
   ],
   imports: [
     CommonModule,

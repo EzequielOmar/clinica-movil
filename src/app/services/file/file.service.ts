@@ -16,10 +16,7 @@ export class FileService {
       })
     );
 
-  private uploadAndGetLink = async (
-    uid: string,
-    file: File
-  ): Promise<string> => {
+  uploadAndGetLink = async (uid: string, file: File): Promise<string> => {
     return await this.fireStorage
       .upload(uid + '/' + file.name, file)
       .then(async () => {

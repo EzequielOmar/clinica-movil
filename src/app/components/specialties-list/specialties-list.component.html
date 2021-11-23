@@ -1,0 +1,4 @@
+<ul class="list-group  scroll">
+  <li (click)="selectSpecialtie(s)" [class.active]="spec===s" class="list-group-item" role="button"
+    *ngFor="let s of specialties">{{s}}</li>
+</ul>

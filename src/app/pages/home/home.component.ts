@@ -26,9 +26,6 @@ export class HomeComponent implements OnDestroy {
     //this.sub = this.Auth.authUserObservable.subscribe((u) => (this.user = u));
     this.sub = this.Auth.authUserObservable.subscribe((u) => {
       this.user = u;
-      setInterval(() => {
-        console.log(this.user);
-      }, 3000);
     });
     config.interval = 3000;
     config.wrap = true;
