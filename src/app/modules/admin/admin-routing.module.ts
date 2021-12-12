@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from 'src/app/pages/admin/admin-dashboard/admin-dashboard.component';
 import { AdminPanelComponent } from 'src/app/pages/admin/admin-panel/admin-panel.component';
-import { NewAppointmenComponent } from 'src/app/pages/admin/new-appointment/new-appointmen.component';
+import { NewAppointmenComponent } from 'src/app/components/new-appointment/new-appointmen.component';
 import { SpecialistPanelComponent } from 'src/app/pages/admin/specialist-panel/specialist-panel.component';
 import { UserPanelComponent } from 'src/app/pages/admin/user-panel/user-panel.component';
 

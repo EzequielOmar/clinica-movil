@@ -12,6 +12,8 @@ import { DayPipe } from 'src/app/pipes/day/day.pipe';
 import { AppointmentDetailComponent } from 'src/app/components/appointment-detail/appointment-detail.component';
 import { SpecialtiesListComponent } from '../../components/specialties-list/specialties-list.component';
 import { SimpleUsersListComponent } from '../../components/simple-users-list/simple-users-list.component';
+import { NewAppointmenComponent } from 'src/app/components/new-appointment/new-appointmen.component';
+import { BtnSpinnerDirective } from 'src/app/directives/btn-spinner/btn-spinner.directive';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { SimpleUsersListComponent } from '../../components/simple-users-list/sim
     AppointmentDetailComponent,
     SpecialtiesListComponent,
     SimpleUsersListComponent,
+    NewAppointmenComponent,
+    BtnSpinnerDirective,
   ],
   imports: [
     CommonModule,
@@ -42,6 +46,8 @@ import { SimpleUsersListComponent } from '../../components/simple-users-list/sim
     AppointmentDetailComponent,
     SpecialtiesListComponent,
     SimpleUsersListComponent,
+    NewAppointmenComponent,
+    BtnSpinnerDirective,
   ],
 })
 export class SharedComponentsModule {}

@@ -13,7 +13,7 @@ export class AppointmentsService implements OnDestroy {
   ngOnDestroy() {}
 
   newAppointment(appointment: Appointment) {
-    this.db.set(dbNames.appointments, appointment);
+    return this.db.set(dbNames.appointments, appointment);
   }
 
   /**
@@ -36,8 +36,6 @@ export class AppointmentsService implements OnDestroy {
           let app = doc.data() as Appointment;
           takenHours.push(app.hora);
         });
-        takenHours.push("07:30");
-        takenHours.push("19:30");
         return takenHours;
       });
   };

@@ -41,8 +41,8 @@
         <div class="col-6">
           <button (click)="cancel()" type="button" class="btn btn-secondary px-5 link py-2 my-3 ">Cancelar</button>
         </div>
-        <div class="col-6" *ngIf="!spinner else loading">
-          <button type="submit" class="btn btn-primary px-5 link py-2 my-3">Enviar</button>
+        <div class="col-6">
+          <button type="submit" btnSpinner [spinner]="spinner" class="btn btn-primary px-5 link py-2 my-3">Enviar</button>
         </div>
       </div>
     </form>
@@ -71,15 +71,6 @@
 <ng-template #maxError>
   <div class="invalid-feedback d-block" style="width: 100%;">
     *El valor de este campo es muy largo/alto*
-  </div>
-</ng-template>
-<!--Loading-->
-<ng-template #loading>
-  <div class="col-6">
-    <button class="btn btn-primary px-4 link py-2 my-3" type="button" disabled>
-      <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
-      <span class="sr-only">Procesando...</span>
-    </button>
   </div>
 </ng-template>
 <!--Error-->

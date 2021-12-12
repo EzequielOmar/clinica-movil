@@ -12,7 +12,6 @@ export class UidDirective {
   constructor(
     el: ElementRef,
     private Auth: AuthService,
-    private rd: Renderer2
   ) {
     this.sub = this.Auth.authUserObservable.subscribe((u) => {
       this.mail = u?.email ?? '';

@@ -1,0 +1,59 @@
+<div class="row">
+  <h4>Cargar Turno</h4>
+  <div *ngIf="user && user.tipo===1" class="col-3 text-center text-muted">
+    <!--Pacientes-->
+    <h5>Pacientes</h5>
+    <app-simple-users-list [users]="pacients" (userSelected)="receivePacient($event.id)"></app-simple-users-list>
+  </div>
+  <div *ngIf="specialties.length" class="col-3 text-center text-muted">
+    <!--Especialidades-->
+    <h5>Especialidades</h5>
+    <app-specialties-list [specialties]="specialties" (specialtieSelected)="receiveSpecialtie($event)">
+    </app-specialties-list>
+  </div>
+  <div *ngIf="specialists" class="col-3 text-center text-muted">
+    <!--Especialistas-->
+    <h5>Especialistas</h5>
+    <app-simple-users-list [users]="specialists" (userSelected)="receiveSpecialist($event)"></app-simple-users-list>
+  </div>
+  <div *ngIf="specialist" class="col-3 text-center text-muted">
+    <h5>Fecha</h5>
+    <!--Dia-->
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Fecha</label>
+      </div>
+      <select (change)="receiveDate(date.value)" #date class="form-control" id="inputGroupSelect01">
+        <option selected disabled>--Elije una fecha--</option>
+        <option *ngFor="let date of dates" value="{{date}}">{{date.toLocaleDateString()}}</option>
+      </select>
+    </div>
+    <!--Hora-->
+    <h5 *ngIf="appointment.controls['dia'].value">Hora</h5>
+    <ul *ngIf="appointment.controls['dia'].value" class="list-group list-group-horizontal d-flex flex-wrap scroll">
+      <li (click)="receiveHour(hs)" [class.deactive]="hoursTaked.includes(hs)"
+        class="list-group-item border rounded p-1 m-1" role="button" *ngFor="let hs of hours">{{hs}}
+        hs</li>
+    </ul>
+  </div>
+</div>
+<div *ngIf="appointment && appointment.controls['paciente'].value" class="row">
+  <h4>Pre Turno</h4>
+  <div class="col-md-8">
+    <!--Preturno-->
+    <app-appointment-detail [appointment]="getAppointment()"></app-appointment-detail>
+  </div>
+  <div class="col-md-4">
+    <!--Botonera-->
+    <div *ngIf="success" class="alert alert-success" role="alert">
+      Tu turno fue guardado con éxito.
+    </div>
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      Algo ha salido mal, por favor inténtalode nuevo más tarde.
+    </div>
+    <span *ngIf="appointment.valid" class="text-success">**Todo listo, chequeá los datos y confirmá tu turno**</span>
+    <button (click)="saveAppointment()" *ngIf="appointment.valid" btnSpinner [spinner]="spinner"
+      class="btn btn-primary m-1">Solicitar Turno</button>
+    <button (click)="clear()" class="btn btn-warning m-1">Limpiar</button>
+  </div>
+</div>

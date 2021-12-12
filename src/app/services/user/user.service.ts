@@ -30,6 +30,7 @@ export class UserService {
     let specialists: Array<UserId> = [];
     await this.getUsersByType(UserProfiles.specialist)
       .where('especialidad', 'array-contains', spec)
+      .where('verificado', '==', true)
       .get()
       .then((snap: any) => {
         snap.forEach((d: any) => {
