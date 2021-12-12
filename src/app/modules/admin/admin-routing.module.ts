@@ -5,6 +5,7 @@ import { AdminPanelComponent } from 'src/app/pages/admin/admin-panel/admin-panel
 import { NewAppointmenComponent } from 'src/app/components/new-appointment/new-appointmen.component';
 import { SpecialistPanelComponent } from 'src/app/pages/admin/specialist-panel/specialist-panel.component';
 import { UserPanelComponent } from 'src/app/pages/admin/user-panel/user-panel.component';
+import { AppointmentsComponent } from 'src/app/components/appointments/appointments.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,11 @@ const routes: Routes = [
       {
         path: 'new-appointment',
         component: NewAppointmenComponent,
+        outlet: 'adminMenu',
+      },
+      {
+        path: 'appointments',
+        component: AppointmentsComponent,
         outlet: 'adminMenu',
       },
     ],

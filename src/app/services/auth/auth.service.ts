@@ -35,6 +35,13 @@ export class AuthService implements OnDestroy {
       .catch(() => null);
   };
 
+  getCurrentUser = async (): Promise<User | null> => {
+    return await this.userDb
+      .getUser(this.user.uid)
+      .then((dbUser) => dbUser)
+      .catch(() => null);
+  };
+
   get currentUser(): firebase.User | null {
     return this.user;
   }

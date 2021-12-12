@@ -17,7 +17,7 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class NewAppointmenComponent implements OnInit {
   //current user
-  user!: User;
+  user?: any;
   //form/show data
   pacients!: UserId[];
   specialties: Array<string> = [];
@@ -42,9 +42,9 @@ export class NewAppointmenComponent implements OnInit {
   ) {
     Promise.all([
       this.getSpecialtiesOnce(),
-      this.userDb
-        .getUser(this.auth.currentUser?.uid ?? '')
-        .then((u) => (this.user = u)),
+      this.auth.getCurrentUser().then((u) => {
+        this.user = u;
+      }),
     ]).then(() => {
       if (this.user.tipo === UserProfiles.admin) this.getPacientsOnce();
       this.appointment = this.fb.group({

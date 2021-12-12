@@ -3,6 +3,7 @@ export const E_AppointmentState = {
   aceptado: 2,
   cancelado: 3,
   finalizado: 4,
+  archivado: 5,
 };
 
 export const E_EventAppointmentComment = {

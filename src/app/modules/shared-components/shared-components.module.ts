@@ -14,6 +14,7 @@ import { SpecialtiesListComponent } from '../../components/specialties-list/spec
 import { SimpleUsersListComponent } from '../../components/simple-users-list/simple-users-list.component';
 import { NewAppointmenComponent } from 'src/app/components/new-appointment/new-appointmen.component';
 import { BtnSpinnerDirective } from 'src/app/directives/btn-spinner/btn-spinner.directive';
+import { AppointmentsComponent } from 'src/app/components/appointments/appointments.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { BtnSpinnerDirective } from 'src/app/directives/btn-spinner/btn-spinner.
     SimpleUsersListComponent,
     NewAppointmenComponent,
     BtnSpinnerDirective,
+    AppointmentsComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +50,7 @@ import { BtnSpinnerDirective } from 'src/app/directives/btn-spinner/btn-spinner.
     SimpleUsersListComponent,
     NewAppointmenComponent,
     BtnSpinnerDirective,
+    AppointmentsComponent,
   ],
 })
 export class SharedComponentsModule {}

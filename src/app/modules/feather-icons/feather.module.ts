@@ -20,6 +20,7 @@ import {
   X,
   FilePlus,
   FileText,
+  List
 } from 'angular-feather/icons';
 
 // Select some icons (use an object, not an array)
@@ -42,6 +43,7 @@ const icons = {
   X,
   FilePlus,
   FileText,
+  List
 };
 
 @NgModule({

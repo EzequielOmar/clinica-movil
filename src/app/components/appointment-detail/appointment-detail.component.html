@@ -1,8 +1,12 @@
-{{appointment?.especialidad}}
-{{appointment?.dia}}
-{{appointment?.hora}}
-{{appointment?.paciente}}
-{{appointment?.especialista}}
+
+<div *ngIf="show">
+
+  {{appointment?.especialidad}}
+  {{appointment?.dia}}
+  {{appointment?.hora}}
+  {{pac?.apellido}}, {{pac?.nombre}}
+  {{spec?.apellido}}, {{spec?.nombre}}
+</div>
 
 
 <!--

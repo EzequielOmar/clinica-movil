@@ -1,6 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Appointment } from 'src/app/interfaces/appointment';
+import {
+  Appointment,
+  E_AppointmentState,
+} from 'src/app/interfaces/appointment';
 import { dbNames } from 'src/app/interfaces/dbNames';
 import { DbService } from '../db/db.service';
 
@@ -14,6 +17,13 @@ export class AppointmentsService implements OnDestroy {
 
   newAppointment(appointment: Appointment) {
     return this.db.set(dbNames.appointments, appointment);
+  }
+
+  getAppointments() {
+    return this.db
+      .getObserverDb(dbNames.appointments)
+      .where('estado', '!=', E_AppointmentState.archivado)
+      .get();
   }
 
   /**
